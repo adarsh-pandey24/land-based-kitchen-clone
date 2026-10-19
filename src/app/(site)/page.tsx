@@ -1,8 +1,10 @@
 import Link from "next/link";
-import { gallery, images, site } from "@/lib/site";
+import { images, site } from "@/lib/site";
+import { getGallery } from "@/lib/content";
 import { ContactCta, GalleryGrid, PageHero, ServiceCards, Split, Testimonials } from "@/components/Sections";
 
-export default function Home() {
+export default async function Home() {
+  const galleryItems = await getGallery("home", "home", 8);
   return (
     <>
       <PageHero
@@ -55,7 +57,7 @@ export default function Home() {
 
       <GalleryGrid
         title="Gallery"
-        items={gallery("home", 8)}
+        items={galleryItems}
         cta={{ label: "View Full Gallery", href: "/gallery" }}
       />
 

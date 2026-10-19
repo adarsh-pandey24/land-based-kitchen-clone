@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Poppins } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import { site } from "@/lib/site";
 
 const playfair = Playfair_Display({
@@ -24,11 +22,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${playfair.variable} ${poppins.variable} antialiased`}>
-      <body className="font-light">
-        <Header />
-        <main>{children}</main>
-        <Footer />
-      </body>
+      <body className="font-light">{children}</body>
     </html>
   );
 }

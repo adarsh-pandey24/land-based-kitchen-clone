@@ -20,6 +20,39 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Admin CMS
+
+The site includes a database-backed admin panel at `/admin` for catering services, chef menus, gallery images, testimonials and chef profiles. Data lives in PostgreSQL (NeonDB) via Prisma.
+
+### Setup
+
+1. Copy `.env.example` to `.env` and fill in:
+   - `DATABASE_URL`: the Neon connection string (keep `?sslmode=require`).
+   - `SESSION_SECRET`: 32+ random characters. Generate one with
+     `node -e "console.log(require('crypto').randomBytes(32).toString('base64url'))"`
+   - `ADMIN_EMAIL` and `ADMIN_PASSWORD` (12+ characters): only used by the create-admin script.
+2. Install dependencies (this also generates the Prisma client): `npm install`
+3. Apply migrations: `npm run db:migrate`
+4. Create the first admin: `npm run create-admin`, then delete `ADMIN_PASSWORD` from `.env`.
+   Running the script again with the same email resets that account's password.
+5. Start the app: `npm run dev`, then sign in at http://localhost:3000/admin/login
+
+For production, set `DATABASE_URL` and `SESSION_SECRET` in the hosting provider's environment settings, then run `npm run db:migrate` and `npm run build`.
+
+### How content reaches the public site
+
+- Only published records are shown. New records are drafts unless "Published" is ticked.
+- While a module has no records at all, its section keeps showing the original placeholder content from `src/lib/site.ts`.
+- Saving, publishing, reordering or deleting refreshes the affected public pages on the next request.
+- Images are entered as URLs (https or a site path such as `/images/dish.jpg`). There is no file upload.
+
+### Roles
+
+- `ADMIN`: manages all content and admin accounts (`/admin/users`).
+- `EDITOR`: manages content only.
+
+There is no public sign-up. New accounts are created by an admin, or with the create-admin script.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

@@ -1,7 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { images, menus, services, testimonials } from "@/lib/site";
+import { images } from "@/lib/site";
+import { getMenus, getServices, getTestimonials, type PublicImage } from "@/lib/content";
 import ContactForm from "./ContactForm";
 
 export function Rule({ center = false }: { center?: boolean }) {
@@ -86,7 +87,7 @@ export function Split({
   );
 }
 
-export function ServiceCards({
+export async function ServiceCards({
   title = "Private Chef, Dining & Catering Services",
   exclude,
   children,
@@ -95,7 +96,7 @@ export function ServiceCards({
   exclude?: string;
   children?: ReactNode;
 }) {
-  const list = services.filter((s) => s.title !== exclude);
+  const list = (await getServices()).filter((s) => s.title !== exclude);
   return (
     <section className="bg-mist py-24">
       <div className="mx-auto max-w-7xl px-5">
@@ -112,6 +113,9 @@ export function ServiceCards({
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
               <div className="absolute inset-x-0 bottom-0 p-8 text-white">
                 <h3 className="font-serif text-2xl md:text-3xl">{s.title}</h3>
+                {s.priceLabel && (
+                  <p className="mt-2 text-xs uppercase tracking-[0.2em] text-white/80">{s.priceLabel}</p>
+                )}
                 <p className="mt-3 max-h-0 overflow-hidden text-sm leading-relaxed opacity-0 transition-all duration-500 group-hover:max-h-40 group-hover:opacity-100">
                   {s.text}
                 </p>
@@ -135,7 +139,7 @@ export function GalleryGrid({
   dark = true,
 }: {
   title?: string;
-  items: string[];
+  items: PublicImage[];
   cta?: { label: string; href: string };
   dark?: boolean;
 }) {
@@ -149,15 +153,20 @@ export function GalleryGrid({
           </>
         )}
         <div className={`grid grid-cols-2 gap-3 md:grid-cols-4 ${title ? "mt-14" : ""}`}>
-          {items.map((src, i) => (
-            <div key={src} className="group overflow-hidden">
+          {items.map((item, i) => (
+            <figure key={`${item.src}-${i}`} className="group relative overflow-hidden">
               <img
-                src={src}
-                alt={`Gallery image ${i + 1}`}
+                src={item.src}
+                alt={item.alt}
                 loading="lazy"
                 className="aspect-square w-full object-cover transition duration-700 group-hover:scale-110 group-hover:opacity-80"
               />
-            </div>
+              {item.caption && (
+                <figcaption className="absolute inset-x-0 bottom-0 bg-black/60 px-3 py-2 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100">
+                  {item.caption}
+                </figcaption>
+              )}
+            </figure>
           ))}
         </div>
         {cta && (
@@ -203,14 +212,44 @@ export function Process({
   );
 }
 
-export function MenuDownloads({ title }: { title: string }) {
+export async function MenuDownloads({ title }: { title: string }) {
+  const menus = await getMenus();
+  if (menus.length === 0) return null;
   return (
     <section className="py-24">
       <div className="mx-auto max-w-5xl px-5 text-center">
         <h2 className="heading">{title}</h2>
         <Rule center />
         <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {menus.map((m) => (
+          {menus.map((m) =>
+            m.kind === "menu" ? (
+              <details key={m.title} className="group border border-gold text-left open:md:col-span-3">
+                <summary className="cursor-pointer list-none px-6 py-10 text-center transition-colors hover:bg-gold hover:text-white">
+                  <span className="block text-xs uppercase tracking-[0.2em] text-gold group-hover:text-inherit">
+                    {m.category}
+                  </span>
+                  <span className="mt-4 block font-serif text-xl">{m.title}</span>
+                  <span className="mt-2 block text-xs uppercase tracking-[0.2em] text-muted">View menu</span>
+                </summary>
+                <div className="grid gap-8 px-6 pb-10 md:grid-cols-[1fr_2fr]">
+                  {m.image && <img src={m.image} alt={m.title} className="aspect-[4/5] w-full object-cover" />}
+                  <div className={m.image ? "" : "md:col-span-2"}>
+                    <p className="whitespace-pre-line leading-relaxed text-muted">{m.description}</p>
+                    <ul className="mt-6 divide-y divide-line">
+                      {m.dishes.map((d, i) => (
+                        <li key={i} className="py-4">
+                          <p className="font-serif text-lg">
+                            {d.name}
+                            {d.dietary && <span className="ml-2 text-xs uppercase tracking-[0.2em] text-gold">{d.dietary}</span>}
+                          </p>
+                          {d.description && <p className="mt-1 text-sm text-muted">{d.description}</p>}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </details>
+            ) : (
             <a
               key={m.title}
               href={m.href}
@@ -227,7 +266,8 @@ export function MenuDownloads({ title }: { title: string }) {
                 View menu
               </span>
             </a>
-          ))}
+            ),
+          )}
         </div>
       </div>
     </section>
@@ -303,20 +343,25 @@ export function Features({
   );
 }
 
-export function Testimonials() {
+export async function Testimonials() {
+  const testimonials = await getTestimonials();
+  if (testimonials.length === 0) return null;
   return (
     <section className="bg-mist py-24">
       <div className="mx-auto max-w-7xl px-5">
         <h2 className="heading text-center capitalize">Our clients love us</h2>
         <Rule center />
         <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {testimonials.map((t) => (
-            <figure key={t.name} className="bg-white p-8 shadow-sm">
+          {testimonials.map((t, i) => (
+            <figure key={`${t.name}-${i}`} className="bg-white p-8 shadow-sm">
               <div className="flex items-center gap-3">
                 <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gold font-serif text-lg text-white">
                   {t.name.charAt(0)}
                 </div>
-                <figcaption className="font-medium">{t.name}</figcaption>
+                <figcaption>
+                  <span className="block font-medium">{t.name}</span>
+                  {t.role && <span className="block text-xs text-muted">{t.role}</span>}
+                </figcaption>
               </div>
               <div className="mt-4 text-[#f6bb06]" aria-label="5 stars">
                 ★★★★★

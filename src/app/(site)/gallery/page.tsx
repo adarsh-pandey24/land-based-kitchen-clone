@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
-import { gallery, img } from "@/lib/site";
+import { img } from "@/lib/site";
+import { getGallery } from "@/lib/content";
 import { ContactCta, GalleryGrid, PageHero } from "@/components/Sections";
 
 export const metadata: Metadata = { title: "Gallery" };
 
-export default function GalleryPage() {
+export default async function GalleryPage() {
+  const items = await getGallery(null, "full-gallery");
   return (
     <>
       <PageHero
@@ -12,7 +14,7 @@ export default function GalleryPage() {
         image={img("gallery-hero", 2000, 1300)}
         cta={{ label: "Get a Quote", href: "/contact-us" }}
       />
-      <GalleryGrid items={gallery("full-gallery", 40)} dark={false} />
+      <GalleryGrid items={items} dark={false} />
       <ContactCta />
     </>
   );

@@ -2,37 +2,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { img, images, site } from "@/lib/site";
+import { getChefs } from "@/lib/content";
 import { ContactCta, PageHero, Rule, ServiceCards, Split, Testimonials } from "@/components/Sections";
 
 export const metadata: Metadata = { title: "About Us" };
 
-// Placeholder team. Replace names, roles, photos and bios with your own.
-const team = [
-  {
-    name: "Head Chef",
-    role: "Co-director",
-    image: img("team-chef", 800, 1000),
-    points: [
-      { title: "Experience", text: "Summarise your chef's background, training and kitchens they have worked in." },
-      { title: "Cooking Style", text: "Describe the food: the flavours, techniques and produce they love." },
-      { title: "Philosophy", text: "Explain what drives them and how they approach each menu." },
-    ],
-  },
-  {
-    name: "Service Lead",
-    role: "Co-director",
-    image: img("team-service", 800, 1000),
-    points: [
-      { title: "Background", text: "Describe their hospitality experience and where it began." },
-      { title: "Service Standards", text: "Explain the level of care guests can expect at every event." },
-      { title: "Discretion", text: "Note how privacy and confidentiality are respected for every client." },
-      { title: "Styling", text: "Describe how they set the scene: tables, flowers and atmosphere." },
-      { title: "Presentation", text: "Explain the attention to detail that goes into every space." },
-    ],
-  },
-];
-
-export default function AboutPage() {
+export default async function AboutPage() {
+  const team = await getChefs();
   return (
     <>
       <PageHero
@@ -80,7 +56,7 @@ export default function AboutPage() {
           <Rule center />
           <div className="mt-14 space-y-20">
             {team.map((m, i) => (
-              <div key={m.name} className="grid items-start gap-12 md:grid-cols-[2fr_3fr]">
+              <div key={`${m.name}-${i}`} className="grid items-start gap-12 md:grid-cols-[2fr_3fr]">
                 <img
                   src={m.image}
                   alt={m.name}
@@ -93,7 +69,7 @@ export default function AboutPage() {
                     {m.points.map((p) => (
                       <div key={p.title}>
                         <h4 className="font-serif text-xl text-gold">{p.title}</h4>
-                        <p className="mt-2 leading-relaxed text-muted">{p.text}</p>
+                        <p className="mt-2 whitespace-pre-line leading-relaxed text-muted">{p.text}</p>
                       </div>
                     ))}
                   </div>

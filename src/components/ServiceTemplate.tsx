@@ -1,5 +1,5 @@
 import type { ServicePage } from "@/content/services";
-import { gallery } from "@/lib/site";
+import { getGallery } from "@/lib/content";
 import {
   Benefits,
   ContactCta,
@@ -14,7 +14,8 @@ import {
   Testimonials,
 } from "./Sections";
 
-export default function ServiceTemplate({ page }: { page: ServicePage }) {
+export default async function ServiceTemplate({ page }: { page: ServicePage }) {
+  const galleryItems = await getGallery(page.slug, page.slug, 8);
   return (
     <>
       <PageHero
@@ -41,7 +42,7 @@ export default function ServiceTemplate({ page }: { page: ServicePage }) {
       )}
       <GalleryGrid
         title={page.galleryTitle}
-        items={gallery(page.slug, 8)}
+        items={galleryItems}
         cta={{ label: "Enquire Now", href: "#enquire" }}
       />
       <Benefits {...page.benefits} />
