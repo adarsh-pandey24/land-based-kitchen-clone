@@ -10,6 +10,10 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
+// Admin pages check the session on every request by design, so they are
+// opted out of instant-navigation validation.
+export const instant = false;
+
 async function Sidebar() {
   const user = await requireUser();
   return <AdminNav email={user.email} role={user.role} siteName={site.name} />;

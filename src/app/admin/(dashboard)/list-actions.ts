@@ -24,7 +24,7 @@ type Row = { id: string; published: boolean; sortOrder: number };
 // Minimal shared shape of the five Prisma delegates used below.
 type Delegate = {
   findUnique(args: { where: { id: string } }): Promise<Row | null>;
-  findMany(args: { select: { id: true }; orderBy: object[] }): Promise<{ id: string }[]>;
+  findMany(args: { select: { id: true; sortOrder: true }; orderBy: object[] }): Promise<{ id: string; sortOrder: number }[]>;
   update(args: { where: { id: string }; data: Partial<Row> }): Prisma.PrismaPromise<Row>;
   delete(args: { where: { id: string } }): Promise<Row>;
 };
@@ -63,16 +63,18 @@ export async function togglePublished(module: string, id: string) {
 
 export async function moveItem(module: string, id: string, direction: "up" | "down") {
   return run(module, id, async (d, id) => {
-    const ids = (await d.findMany({ select: { id: true }, orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }] })).map(
-      (r) => r.id,
-    );
+    const rows = await d.findMany({ select: { id: true, sortOrder: true }, orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }] });
+    const ids = rows.map((r) => r.id);
     const from = ids.indexOf(id);
     const to = direction === "up" ? from - 1 : from + 1;
     if (from === -1) throw new Error("Not found");
     if (to < 0 || to >= ids.length) return "Already at the edge.";
     [ids[from], ids[to]] = [ids[to], ids[from]];
-    // Renumber the whole list so sort orders stay unique and gap-free.
-    await db.$transaction(ids.map((rowId, i) => d.update({ where: { id: rowId }, data: { sortOrder: i * 10 } })));
+    // Renumber so sort orders stay unique and gap-free, writing only rows whose
+    // position number actually changes.
+    const current = new Map(rows.map((r) => [r.id, r.sortOrder]));
+    const changes = ids.map((rowId, i) => [rowId, i * 10] as const).filter(([rowId, order]) => current.get(rowId) !== order);
+    await db.$transaction(changes.map(([rowId, order]) => d.update({ where: { id: rowId }, data: { sortOrder: order } })));
     return "Order updated.";
   });
 }

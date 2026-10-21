@@ -32,15 +32,34 @@ export const slug = z
   .max(120)
   .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Use lowercase letters, numbers and hyphens");
 
+// Service page keys (see src/content/services.ts); "" means none / every page.
+export const groupKeys = ["chakna-and-tonic", "grazing-tables-boards", "party-catering", "private-dining-events"] as const;
+
+const optionalUrl = z
+  .string()
+  .trim()
+  .transform((v) => (v === "" ? null : v))
+  .nullable()
+  .pipe(imageUrl.nullable());
+
 const sortOrder = z.coerce.number().int().min(0).max(100000);
 const published = z.boolean();
 
 export const serviceSchema = z.object({
+  group: z.enum(groupKeys, "Choose the service page"),
   title: z.string().trim().min(1, "Title is required").max(160),
   slug,
+  cardLine: optionalText(200),
+  heading: optionalText(200),
   description: z.string().trim().min(1, "Description is required").max(5000),
   imageUrl,
   priceLabel: optionalText(80),
+  guests: optionalText(80),
+  format: optionalText(120),
+  goodFor: optionalText(300),
+  sampleDishes: optionalText(600),
+  smallPrint: optionalText(300),
+  buttonLabel: optionalText(60),
   published,
   sortOrder,
 });
@@ -57,18 +76,15 @@ export const menuSchema = z.object({
   slug,
   description: z.string().trim().min(1, "Description is required").max(5000),
   category: z.string().trim().min(1, "Category is required").max(80),
-  imageUrl: z
-    .string()
-    .trim()
-    .transform((v) => (v === "" ? null : v))
-    .nullable()
-    .pipe(imageUrl.nullable()),
+  group: z.enum(["", ...groupKeys]),
+  imageUrl: optionalUrl,
+  pdfUrl: optionalUrl,
   dishes: z.array(dishSchema).max(100),
   published,
   sortOrder,
 });
 
-export const galleryKeys = ["", "home", "private-chef", "private-dining", "bespoke-catering"] as const;
+export const galleryKeys = ["", ...groupKeys, "behind-the-scenes"] as const;
 
 export const gallerySchema = z.object({
   imageUrl,

@@ -12,7 +12,7 @@ export default async function TestimonialsPage() {
     <>
       <PageHeader
         title="Testimonials"
-        description="Client reviews shown in the “Our clients love us” section."
+        description="The “What hosts say after the party” reviews section. Hidden until one is published."
         action={{ label: "Add testimonial", href: "/admin/testimonials/new" }}
       />
       <Panel>

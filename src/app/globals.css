@@ -1,15 +1,28 @@
 @import "tailwindcss";
 
+/* The Coast & Cardamom brand palette (brand guidelines v1, page 4).
+   Gold Leaf is decorative on light backgrounds (2.2:1); use it for rules,
+   the ampersand and the Chakna & Tonic signature, or as text on navy only. */
 @theme inline {
-  --color-gold: #baa18e;
-  --color-gold-dark: #a08672;
-  --color-ink: #272727;
-  --color-ink-soft: #2b2b2b;
-  --color-mist: #f4f4f4;
-  --color-line: #ededed;
-  --color-muted: #7e7e7e;
-  --font-sans: var(--font-poppins);
-  --font-serif: var(--font-playfair);
+  --color-sea: #faf7f0; /* Sea Salt: page background */
+  --color-shell: #efe8da; /* Shell: alternate bands, cards */
+  --color-navy: #14284b; /* Harbour Navy: headings, text, buttons */
+  --color-surf: #1f5fa6; /* Surf Blue: links, icons */
+  --color-curry: #2f6b34; /* Curry Leaf: dietary tags, hover */
+  --color-cardamom: #9bb345; /* Cardamom Pod: small icons, tag fills */
+  --color-lagoon: #6ec1dc; /* Lagoon: wave details, dividers */
+  --color-gold: #c9a33a; /* Gold Leaf: signature, ampersand */
+
+  /* Aliases used by shared and admin components. */
+  --color-ink: #14284b;
+  --color-ink-soft: #1c335c;
+  --color-mist: #efe8da;
+  --color-line: #e3d9c6;
+  --color-muted: #55617a;
+  --color-gold-dark: #8a6d1e;
+
+  --font-sans: var(--font-dm-sans);
+  --font-serif: var(--font-dm-serif);
 }
 
 html {
@@ -17,23 +30,47 @@ html {
 }
 
 body {
-  background: #ffffff;
-  color: var(--color-ink);
-  font-family: var(--font-poppins), sans-serif;
+  background: var(--color-sea);
+  color: var(--color-navy);
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: 17px;
+  line-height: 1.65;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-dm-serif), serif;
+  font-weight: 400;
 }
 
 .eyebrow {
-  @apply font-sans text-sm uppercase tracking-[0.3em] text-gold;
+  @apply font-sans text-[13px] leading-5 font-semibold uppercase tracking-[0.25em] text-muted;
 }
 
 .heading {
-  @apply font-serif text-3xl leading-tight md:text-5xl;
+  @apply font-serif text-[32px] leading-[1.2] md:text-[40px] md:leading-[48px];
 }
 
 .btn {
-  @apply inline-block border border-gold bg-gold px-8 py-3 text-sm uppercase tracking-[0.2em] text-white transition-colors hover:bg-transparent hover:text-gold;
+  @apply inline-block rounded-sm border border-navy bg-navy px-7 py-3 text-[15px] font-medium text-sea transition-colors hover:border-curry hover:bg-curry;
 }
 
 .btn-outline {
-  @apply inline-block border border-white px-8 py-3 text-sm uppercase tracking-[0.2em] text-white transition-colors hover:bg-white hover:text-ink;
+  @apply inline-block rounded-sm border border-current px-7 py-3 text-[15px] font-medium transition-colors hover:bg-sea hover:text-navy;
+}
+
+.btn-gold {
+  @apply inline-block rounded-sm border border-gold px-7 py-3 text-[15px] font-medium text-gold transition-colors hover:bg-gold hover:text-navy;
+}
+
+/* Arrow on call-to-action buttons, as on the reference site. */
+.btn-arrow::after {
+  content: "\2197";
+  margin-left: 0.6em;
+  display: inline-block;
+  transition: transform 0.2s;
+}
+.btn-arrow:hover::after {
+  transform: translate(2px, -2px);
 }

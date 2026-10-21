@@ -5,7 +5,7 @@ export default function SiteLayout({ children }: LayoutProps<"/">) {
   return (
     <>
       <Header />
-      <main>{children}</main>
+      <main className="pt-[76px]">{children}</main>
       <Footer />
     </>
   );

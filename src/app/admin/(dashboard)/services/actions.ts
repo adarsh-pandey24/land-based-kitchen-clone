@@ -8,14 +8,27 @@ import { tags } from "@/lib/content";
 import { serviceSchema } from "@/lib/validation";
 import { bool, dbError, invalid, str, type FormState } from "@/lib/admin-crud";
 
+const textFields = [
+  "group",
+  "title",
+  "slug",
+  "cardLine",
+  "heading",
+  "description",
+  "imageUrl",
+  "priceLabel",
+  "guests",
+  "format",
+  "goodFor",
+  "sampleDishes",
+  "smallPrint",
+  "buttonLabel",
+] as const;
+
 export async function saveService(id: string | null, _prev: FormState, formData: FormData): Promise<FormState> {
   await requireUser();
   const parsed = serviceSchema.safeParse({
-    title: str(formData, "title"),
-    slug: str(formData, "slug"),
-    description: str(formData, "description"),
-    imageUrl: str(formData, "imageUrl"),
-    priceLabel: str(formData, "priceLabel"),
+    ...Object.fromEntries(textFields.map((k) => [k, str(formData, k)])),
     published: bool(formData, "published"),
     sortOrder: str(formData, "sortOrder") || 0,
   });

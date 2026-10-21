@@ -1,84 +1,115 @@
+/* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
-import { images, site } from "@/lib/site";
-import { getGallery } from "@/lib/content";
-import { ContactCta, GalleryGrid, PageHero, ServiceCards, Split, Testimonials } from "@/components/Sections";
+import { dietary, images, site } from "@/lib/site";
+import { getChefs, getGallery } from "@/lib/content";
+import {
+  ChaknaBand,
+  EnquirySection,
+  GalleryStrip,
+  GroupTiles,
+  PageHero,
+  SectionIntro,
+  Split,
+} from "@/components/Sections";
+
+const whyPoints = [
+  { title: "The chef is the caterer.", text: "Joseph plans, cooks and serves. No faceless kitchen." },
+  {
+    title: "Built around your guests.",
+    text: `${dietary.join(", ").replace(/, ([^,]*)$/, " and $1")}, every dish labelled.`,
+  },
+  {
+    title: "Any size, any venue.",
+    text: "A board on the coffee table, a barbecue in the backyard, a buffet for 100, or lunch on a boat.",
+  },
+  {
+    title: "Three steps, no stress.",
+    text: "Tell us the plan, get a tailored menu and quote, then enjoy your party. We clean up.",
+  },
+];
 
 export default async function Home() {
-  const galleryItems = await getGallery("home", "home", 8);
+  const [galleryItems, chefs] = await Promise.all([getGallery(null, 12), getChefs()]);
+  const chef = chefs[0];
   return (
     <>
-      <PageHero
-        full
-        title="Private chef, dining & catering services"
-        subtitle={site.regions}
-        image={images.hero}
-        cta={{ label: "Get a Quote", href: "/contact-us" }}
-      />
+      <PageHero full badge align="left" title="Private chef & catering on the Gold Coast" line={site.line} image={images.hero} />
 
-      <Split
-        eyebrow={`Welcome to ${site.name}`}
-        title="Thoughtful food, effortless hosting."
-        image={images.welcome}
-        framed
-        cta={{ label: "Enquire Now", href: "/contact-us" }}
-      >
-        <p>
-          Turn your home or venue into a restaurant for the night. Our chefs plan the menu, shop
-          for the best local produce, cook on site and leave your kitchen spotless.
-        </p>
-        <p>
-          Every event is planned around you: your guests, your dietary needs and the mood you want
-          to create. You relax and enjoy the evening while we look after the details.
-        </p>
-      </Split>
-
-      <ServiceCards>
-        <p className="mx-auto mt-14 max-w-3xl text-center leading-relaxed text-muted">
-          Whether it is a quiet anniversary dinner or a party for a hundred, we design a menu that
-          fits the occasion and serve it with care.
-        </p>
-        <div className="mt-8 text-center">
-          <Link href="/contact-us" className="btn">Enquire Now</Link>
+      <section className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-20 md:grid-cols-[2fr_3fr] md:py-24">
+        <div className="relative mx-auto w-full max-w-sm">
+          <div className="absolute -bottom-4 -left-4 h-2/3 w-2/3 bg-shell" aria-hidden />
+          <img src={images.welcome} alt="" className="relative aspect-[4/5] w-full rounded-sm object-cover" />
         </div>
-      </ServiceCards>
+        <div>
+        <SectionIntro eyebrow="Welcome to The Coast & Cardamom" title="Hotel-trained cooking, served at your place." center>
+          <p>
+            Chef Joseph Raj spent {site.yearsExperience} years in luxury hotel and restaurant kitchens across
+            Australia and Asia. Now he cooks for Gold Coast birthdays, boat days, office lunches and dinner parties,
+            with Indian spice and the best of local produce.
+          </p>
+          <p>
+            Every menu starts with your guest list: who&apos;s coming, what they love, and what they can&apos;t eat.
+            Grazing boards for 10, buffets for 100, and everything in between.
+          </p>
+        </SectionIntro>
+        <div className="mt-8 text-center">
+          <a href="#enquire" className="btn btn-arrow">
+            Plan your event
+          </a>
+        </div>
+        </div>
+      </section>
+
+      <GroupTiles eyebrow="What we cater" title="Four ways to feed your guests." />
+      <div className="bg-shell px-5 pb-16 text-center">
+        <p className="text-muted">Drop-off or chef on-site. Every menu built around your guests&apos; dietary needs.</p>
+        <Link href="/services" className="btn mt-6">
+          See all 12 services
+        </Link>
+      </div>
+
+      <ChaknaBand />
 
       <Split
-        eyebrow="Our Story"
-        title={`About ${site.name}`}
-        image={images.about}
+        eyebrow="Meet the chef"
+        title="A hotel chef, cooking in your kitchen."
+        image={chef?.image ?? images.chef}
         reverse
-        cta={{ label: "Learn More", href: "/about-us" }}
+        cta={{ label: "Read Joseph's story", href: "/about" }}
       >
         <p>
-          We are a small team of chefs and hospitality professionals with a shared love of seasonal
-          cooking and warm, attentive service. Add your own story here.
+          Joseph cooked in luxury hotels and restaurants across Australia and Asia before bringing it all to the
+          Gold Coast. He plans your menu, cooks it, and is usually the one plating it. You&apos;ll have his number, not a call
+          centre&apos;s.
         </p>
       </Split>
 
-      <GalleryGrid
-        title="Gallery"
-        items={galleryItems}
-        cta={{ label: "View Full Gallery", href: "/gallery" }}
-      />
+      <div className="bg-shell">
+        <GalleryStrip eyebrow="From recent events" title="Real food from real Gold Coast events." items={galleryItems} />
+      </div>
 
-      <Split
-        title={`Why Choose ${site.name}`}
-        image={images.why}
-        cta={{ label: "Get a Quote", href: "/contact-us" }}
-      >
-        <p>
-          Fresh produce from trusted local growers, menus written for each client and a team that
-          treats your home with respect.
-        </p>
-        <p>
-          From a single dinner to a full weekend of meals, we handle the planning, cooking, service
-          and clean-up so you can focus on your guests.
-        </p>
-        <p>Introduce your head chef and front-of-house lead here.</p>
-      </Split>
+      <section className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-20 md:grid-cols-2 md:py-24">
+        <div className="grid gap-4">
+          <img src={images.why1} alt="" className="aspect-[4/3] w-full rounded-sm object-cover" />
+          <img src={images.why2} alt="" className="aspect-[4/3] w-full rounded-sm object-cover" />
+        </div>
+        <div>
+          <SectionIntro eyebrow="Why us" title="Indian flavour, Australian formats, one chef who cares." />
+          <ul className="mt-8 space-y-5">
+            {whyPoints.map((p) => (
+              <li key={p.title}>
+                <p className="font-semibold">{p.title}</p>
+                <p className="text-muted">{p.text}</p>
+              </li>
+            ))}
+          </ul>
+          <a href="#enquire" className="btn mt-8">
+            Plan your event
+          </a>
+        </div>
+      </section>
 
-      <Testimonials />
-      <ContactCta />
+      <EnquirySection />
     </>
   );
 }

@@ -2,6 +2,7 @@ import { db } from "@/lib/db";
 import { requireUser } from "@/lib/auth";
 import ContentList from "@/components/admin/ContentList";
 import { PageHeader, Panel } from "@/components/admin/ui";
+import { groupOptions } from "./ServiceForm";
 
 export const metadata = { title: "Catering services" };
 
@@ -12,7 +13,7 @@ export default async function ServicesPage() {
     <>
       <PageHeader
         title="Catering services"
-        description="Service cards shown on the home, about and service pages."
+        description="The service blocks on the four service pages, and the service list in the enquiry form."
         action={{ label: "Add service", href: "/admin/services/new" }}
       />
       <Panel>
@@ -23,7 +24,7 @@ export default async function ServicesPage() {
           rows={rows.map((r) => ({
             id: r.id,
             title: r.title,
-            subtitle: [`/${r.slug}`, r.priceLabel].filter(Boolean).join(" · "),
+            subtitle: [groupOptions.find((g) => g.value === r.group)?.label ?? "No page", r.priceLabel].filter(Boolean).join(" · "),
             image: r.imageUrl,
             published: r.published,
           }))}

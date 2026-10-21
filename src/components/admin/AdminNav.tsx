@@ -7,6 +7,7 @@ import { logout } from "@/app/admin/auth-actions";
 
 const links = [
   { href: "/admin", label: "Overview" },
+  { href: "/admin/enquiries", label: "Enquiries" },
   { href: "/admin/services", label: "Catering services" },
   { href: "/admin/menus", label: "Chef menus" },
   { href: "/admin/gallery", label: "Gallery" },

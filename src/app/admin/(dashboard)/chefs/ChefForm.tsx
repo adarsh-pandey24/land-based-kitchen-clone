@@ -11,10 +11,10 @@ export default function ChefForm({ chef }: { chef?: ChefProfile }) {
       </div>
       <TextField name="designation" label="Designation" required defaultValue={chef?.designation} hint="e.g. Head Chef" />
       <TextArea name="experience" label="Experience (optional)" rows={3} defaultValue={chef?.experience} />
-      <TextArea name="biography" label="Biography" required rows={8} defaultValue={chef?.biography} />
+      <TextArea name="biography" label="Biography" required rows={8} defaultValue={chef?.biography} hint="Leave a blank line between paragraphs." />
       <ImageUrlField name="imageUrl" label="Photo URL" required defaultValue={chef?.imageUrl} />
       <TextField name="sortOrder" label="Display order" type="number" defaultValue={chef?.sortOrder ?? 0} hint="Lower numbers show first" />
-      <Checkbox name="published" label="Published (visible on About Us)" defaultChecked={chef?.published} />
+      <Checkbox name="published" label="Published (visible on the About page)" defaultChecked={chef?.published} />
       <SubmitBar cancelHref="/admin/chefs" />
     </AdminForm>
   );

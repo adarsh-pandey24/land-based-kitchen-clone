@@ -7,7 +7,7 @@ export default function TestimonialForm({ testimonial }: { testimonial?: Testimo
     <AdminForm action={saveTestimonial.bind(null, testimonial?.id ?? null)}>
       <p className="text-sm text-muted">Only add genuine reviews you have permission to publish.</p>
       <TextField name="clientName" label="Client name" required defaultValue={testimonial?.clientName} />
-      <TextField name="roleOrCompany" label="Role or company (optional)" defaultValue={testimonial?.roleOrCompany} />
+      <TextField name="roleOrCompany" label="Suburb and event type (optional)" hint="e.g. Burleigh Heads · 40th birthday" defaultValue={testimonial?.roleOrCompany} />
       <TextArea name="content" label="Review" required rows={6} defaultValue={testimonial?.content} />
       <TextField
         name="sortOrder"

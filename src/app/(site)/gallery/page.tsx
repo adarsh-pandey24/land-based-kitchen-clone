@@ -1,21 +1,32 @@
 import type { Metadata } from "next";
-import { img } from "@/lib/site";
+import { img, site } from "@/lib/site";
 import { getGallery } from "@/lib/content";
-import { ContactCta, GalleryGrid, PageHero } from "@/components/Sections";
+import { groups } from "@/content/services";
+import { EnquirySection, PageHero } from "@/components/Sections";
+import GalleryFilter from "@/components/GalleryFilter";
 
-export const metadata: Metadata = { title: "Gallery" };
+export const metadata: Metadata = {
+  title: { absolute: "Catering Gallery · Coast & Cardamom Gold Coast" },
+  description:
+    "Real events cooked by Chef Joseph Raj: plated dinners, buffets, grazing tables and private dining on the Gold Coast.",
+};
+
+const tabs = [...groups.map((g) => ({ key: g.key, label: g.name })), { key: "behind-the-scenes", label: "Behind the scenes" }];
 
 export default async function GalleryPage() {
-  const items = await getGallery(null, "full-gallery");
+  const items = await getGallery(null);
   return (
     <>
       <PageHero
-        title="Feast your eyes on our food gallery"
-        image={img("gallery-hero", 2000, 1300)}
-        cta={{ label: "Get a Quote", href: "/contact-us" }}
+        eyebrow="Gallery"
+        title="Real events. Real food. No stock photos."
+        line="Everything here was cooked by Joseph for a Gold Coast client."
+        image={img("cc-gallery-hero", 2400)}
       />
-      <GalleryGrid items={items} dark={false} />
-      <ContactCta />
+      <section className="mx-auto max-w-7xl px-5 py-20">
+        <GalleryFilter items={items} tabs={tabs} instagram={site.socials.instagram} />
+      </section>
+      <EnquirySection />
     </>
   );
 }

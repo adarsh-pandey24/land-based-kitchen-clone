@@ -1,13 +1,12 @@
 import type { GalleryImage } from "@prisma/client";
 import { AdminForm, Checkbox, ImageUrlField, SelectField, SubmitBar, TextField } from "@/components/admin/Fields";
 import { saveImage } from "./actions";
+import { groupOptions } from "../services/ServiceForm";
 
 export const galleryCategories = [
-  { value: "", label: "Gallery page only (general)" },
-  { value: "home", label: "Home page" },
-  { value: "private-chef", label: "Private Chef page" },
-  { value: "private-dining", label: "Private Dining page" },
-  { value: "bespoke-catering", label: "Bespoke Catering page" },
+  { value: "", label: "General" },
+  ...groupOptions,
+  { value: "behind-the-scenes", label: "Behind the scenes" },
 ];
 
 export default function ImageForm({ image }: { image?: GalleryImage }) {
@@ -28,7 +27,7 @@ export default function ImageForm({ image }: { image?: GalleryImage }) {
           label="Category"
           options={galleryCategories}
           defaultValue={image?.category ?? ""}
-          hint="Every published image also appears on the Gallery page."
+          hint="Sets the Gallery filter tab and which service page strip shows it. Behind the scenes shows on About."
         />
         <TextField name="sortOrder" label="Display order" type="number" defaultValue={image?.sortOrder ?? 0} hint="Lower numbers show first" />
       </div>

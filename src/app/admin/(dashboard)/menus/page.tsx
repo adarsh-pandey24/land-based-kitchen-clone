@@ -12,7 +12,7 @@ export default async function MenusPage() {
     <>
       <PageHeader
         title="Chef menus"
-        description="Sample menus shown on the Private Dining and Bespoke Catering pages."
+        description="The “Sample menus” section on the service pages."
         action={{ label: "Add menu", href: "/admin/menus/new" }}
       />
       <Panel>

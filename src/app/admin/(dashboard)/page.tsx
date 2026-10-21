@@ -8,7 +8,8 @@ export const metadata = { title: "Overview" };
 export default async function AdminHome() {
   const user = await requireUser();
   const count = (p: Promise<number>, q: Promise<number>) => Promise.all([p, q]);
-  const [services, menus, gallery, testimonials, chefs] = await Promise.all([
+  const [newEnquiries, services, menus, gallery, testimonials, chefs] = await Promise.all([
+    db.enquiry.count({ where: { status: "NEW" } }),
     count(db.cateringService.count(), db.cateringService.count({ where: { published: true } })),
     count(db.chefMenu.count(), db.chefMenu.count({ where: { published: true } })),
     count(db.galleryImage.count(), db.galleryImage.count({ where: { published: true } })),
@@ -28,6 +29,18 @@ export default async function AdminHome() {
     <>
       <PageHeader title="Overview" description={`Signed in as ${user.email}`} />
       <Panel>
+        <Link
+          href="/admin/enquiries"
+          className="mb-6 flex items-center justify-between border border-line bg-white p-5 hover:border-navy"
+        >
+          <span>
+            <span className="block text-xs uppercase tracking-[0.2em] text-muted">Enquiries</span>
+            <span className="mt-1 block font-serif text-2xl">
+              {newEnquiries === 0 ? "No new enquiries" : `${newEnquiries} new ${newEnquiries === 1 ? "enquiry" : "enquiries"}`}
+            </span>
+          </span>
+          <span className="text-sm text-gold-dark underline">View enquiries</span>
+        </Link>
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
           {cards.map((c) => (
             <div key={c.href} className="flex flex-col border border-line bg-white p-5">
@@ -52,7 +65,8 @@ export default async function AdminHome() {
             <li>Only published records appear on the public website. New records start as drafts unless you tick Published.</li>
             <li>While a module has no records at all, the website keeps showing its original placeholder content.</li>
             <li>Changes appear on the website on the next page load after saving.</li>
-            <li>Gallery images can be assigned to a page (home or a service page); pages without their own images show the full gallery.</li>
+            <li>Gallery images can be assigned to a service page or Behind the scenes; pages without their own images show the full gallery.</li>
+            <li>Reviews only appear once you publish a testimonial. Only add real reviews you have permission to use.</li>
           </ul>
         </section>
       </Panel>

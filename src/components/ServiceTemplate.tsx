@@ -1,55 +1,46 @@
-import type { ServicePage } from "@/content/services";
-import { getGallery } from "@/lib/content";
+import type { Metadata } from "next";
+import { groupByKey, serviceFaqs, type GroupKey } from "@/content/services";
+import { getGallery, getServices } from "@/lib/content";
 import {
   Benefits,
-  ContactCta,
+  EnquirySection,
   Faqs,
-  Features,
-  GalleryGrid,
-  MenuDownloads,
+  GalleryStrip,
+  GroupTiles,
+  HowItWorks,
+  MenuSection,
   PageHero,
-  Process,
-  ServiceCards,
+  Reasons,
+  ServiceBlocks,
   Split,
-  Testimonials,
 } from "./Sections";
 
-export default async function ServiceTemplate({ page }: { page: ServicePage }) {
-  const galleryItems = await getGallery(page.slug, page.slug, 8);
+export function serviceMetadata(key: GroupKey): Metadata {
+  const group = groupByKey(key)!;
+  return { title: { absolute: group.seo.title }, description: group.seo.description };
+}
+
+// One template for the four service pages, in the copy document's order.
+export default async function ServiceTemplate({ groupKey }: { groupKey: GroupKey }) {
+  const group = groupByKey(groupKey)!;
+  const [galleryItems, services] = await Promise.all([getGallery(group.key, 6), getServices(group.key)]);
+  // Pages with one service (e.g. Chakna & Tonic) pre-select it in the form.
+  const single = services.length === 1 ? services[0].title : undefined;
   return (
     <>
-      <PageHero
-        title={page.hero.title}
-        subtitle={page.hero.subtitle}
-        image={page.hero.image}
-        cta={{ label: "Enquire Now", href: "#enquire" }}
-      />
-      <Split
-        title={page.intro.title}
-        image={page.intro.image}
-        framed
-        cta={{ label: "Book a Service", href: "#enquire" }}
-      >
-        {page.intro.paragraphs.map((p) => (
-          <p key={p}>{p}</p>
-        ))}
+      <PageHero title={group.hero.title} line={group.hero.line} image={group.hero.image} />
+      <Split eyebrow={group.name} title={group.intro.title} image={group.intro.images}>
+        <p>{group.intro.body}</p>
       </Split>
-      <Process title={`Our ${page.name} Process`} steps={page.process} />
-      {page.showMenus ? (
-        <MenuDownloads title={`Sample ${page.name} Menus`} />
-      ) : (
-        <ServiceCards title="Our Other Services" exclude={page.name} />
-      )}
-      <GalleryGrid
-        title={page.galleryTitle}
-        items={galleryItems}
-        cta={{ label: "Enquire Now", href: "#enquire" }}
-      />
-      <Benefits {...page.benefits} />
-      <Features {...page.features} />
-      <Testimonials />
-      <Faqs title={`${page.name} FAQs`} items={page.faqs} />
-      <ContactCta />
+      <ServiceBlocks group={group.key} />
+      <HowItWorks />
+      <MenuSection group={group.key} />
+      <GalleryStrip eyebrow="From recent events" title={`${group.name}, from real events.`} items={galleryItems} />
+      <Benefits images={group.intro.images} />
+      <Reasons />
+      <GroupTiles eyebrow="Other ways we cater" title="More from the kitchen." exclude={group.key} />
+      <Faqs title={`${group.name} FAQs`} items={[...serviceFaqs, ...(group.extraFaqs ?? [])]} />
+      <EnquirySection service={single} />
     </>
   );
 }

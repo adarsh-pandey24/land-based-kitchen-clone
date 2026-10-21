@@ -12,7 +12,7 @@ export default async function ChefsPage() {
     <>
       <PageHeader
         title="Chef profiles"
-        description="Team members shown in “Meet Our Team” on the About Us page."
+        description="The first published profile is the About page story and home portrait; others appear as the team."
         action={{ label: "Add chef", href: "/admin/chefs/new" }}
       />
       <Panel>
