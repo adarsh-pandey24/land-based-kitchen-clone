@@ -1,34 +1,31 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Poppins } from "next/font/google";
+import { DM_Sans, DM_Serif_Display } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import { site } from "@/lib/site";
+import { site, siteUrl } from "@/lib/site";
 
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
+const dmSerif = DM_Serif_Display({
+  variable: "--font-dm-serif",
   subsets: ["latin"],
+  weight: "400",
 });
 
-const poppins = Poppins({
-  variable: "--font-poppins",
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
+  weight: ["400", "500", "600"],
 });
 
 export const metadata: Metadata = {
-  title: { default: `${site.name} | ${site.tagline}`, template: `%s | ${site.name}` },
-  description: `${site.tagline} services across ${site.regions}.`,
+  metadataBase: new URL(siteUrl),
+  title: { default: "Private Chef & Catering Gold Coast · Coast & Cardamom", template: `%s · ${site.name}` },
+  description:
+    "Hotel-trained chef Joseph Raj caters Gold Coast birthdays, boat days and corporate events. Grazing boards to Indian buffets for 100.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${playfair.variable} ${poppins.variable} antialiased`}>
-      <body className="font-light">
-        <Header />
-        <main>{children}</main>
-        <Footer />
-      </body>
+    <html lang="en-AU" className={`${dmSerif.variable} ${dmSans.variable} antialiased`}>
+      <body>{children}</body>
     </html>
   );
 }

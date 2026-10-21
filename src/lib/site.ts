@@ -1,81 +1,98 @@
-// Shared site settings. Replace the placeholder brand, contact details and
-// images with your own (or content you have rights to use).
+// Brand settings and site-wide copy for The Coast & Cardamom Catering Co.
+// Sources: brand guidelines, website copy document, and the client's Drive
+// folder (contact details, Joseph's bio, brand description). Values marked
+// TODO are still to be confirmed by the client.
 
 export const site = {
-  name: "Your Kitchen Co.",
-  tagline: "Private chef, dining & catering",
-  regions: "Gold Coast, Brisbane & Byron Bay",
-  phone: "0400 000 000",
-  email: "hello@example.com",
+  name: "The Coast & Cardamom",
+  legalName: "The Coast & Cardamom Catering Co.",
+  chef: "Joseph Raj",
+  line: "Indian spice. Coastal table. Your place.",
+  tagline: "Where the Coast Meets Spice.",
+  yearsExperience: 16,
+  region: "Gold Coast",
   location: "Gold Coast, QLD",
+  serviceArea: "The Gold Coast and the hinterland. Further afield? Ask, and we'll quote travel.",
+  phone: "+61 487 988 930",
+  whatsapp: "61487988930",
+  email: "thecoastncardamomau@gmail.com",
+  abn: "", // TODO: ABN to be confirmed
+  hours: "", // TODO: enquiry hours
   socials: {
-    facebook: "https://facebook.com/",
-    instagram: "https://instagram.com/",
+    instagram: "https://www.instagram.com/thecoastncardamom",
+    facebook: "", // TODO: to be added
   },
 };
+
+// Public URL of the site, used for the sitemap and social sharing images.
+export const siteUrl = (process.env.SITE_URL ?? "http://localhost:3000").replace(/\/$/, "");
+
+// Google Maps link for the service area (no street address is published).
+export const mapUrl = "https://www.google.com/maps/search/?api=1&query=Gold%20Coast%20QLD%20Australia";
 
 export const tel = `tel:${site.phone.replace(/\s/g, "")}`;
 
-export const nav = [
+// Header menu: seven pages. The four service pages sit under Catering services.
+export type NavItem = { label: string; href: string; children?: { label: string; href: string }[] };
+
+export const nav: NavItem[] = [
   { label: "Home", href: "/" },
-  { label: "About Us", href: "/about-us" },
-  { label: "Private Chef", href: "/private-chef" },
-  { label: "Private Dining", href: "/private-dining" },
-  { label: "Bespoke Catering", href: "/bespoke-catering" },
+  { label: "About the Chef", href: "/about" },
+  {
+    label: "Catering Services",
+    href: "/services",
+    children: [
+      { label: "Chakna & Tonic", href: "/chakna-and-tonic" },
+      { label: "Boards & Grazing", href: "/grazing-tables-boards" },
+      { label: "Parties & Celebrations", href: "/party-catering" },
+      { label: "Dining & Events", href: "/private-dining-events" },
+    ],
+  },
   { label: "Gallery", href: "/gallery" },
-  { label: "Blog", href: "/blog" },
-  { label: "Contact", href: "/contact-us" },
+  { label: "Reviews & FAQs", href: "/reviews-faqs" },
+  { label: "Contact", href: "/contact" },
+  { label: "Privacy Policy", href: "/legal" },
 ];
 
-// Placeholder photography (picsum.photos). Swap for your own files in /public.
-export const img = (seed: string, w = 1600, h = 1000) =>
-  `https://picsum.photos/seed/${seed}/${w}/${h}`;
+export const logo = { badge: "/brand/badge.webp", disc: "/brand/badge-disc.webp" };
 
-export const images = {
-  hero: img("kitchen-hero", 2000, 1300),
-  welcome: img("plated-dish", 900, 1100),
-  about: img("chef-team", 1000, 1200),
-  why: img("table-setting", 1000, 1200),
-  contact: img("dinner-party", 2000, 1100),
+// No food or chef photos have been supplied yet (Drive folders 02-15 are
+// empty), so image slots use on-brand illustrated placeholders. Wide slots get
+// the hero artwork; others rotate through the palette by seed. Replace a slot
+// by pointing it at a file in /public (e.g. /images/grazing-table.jpg).
+const swatches = ["shell", "surf", "curry", "navy", "gold"];
+export const img = (seed: string, w = 1600) => {
+  if (w >= 2000) return "/placeholders/hero.svg";
+  const hash = [...seed].reduce((n, c) => (n * 31 + c.charCodeAt(0)) >>> 0, 7);
+  return `/placeholders/photo-${swatches[hash % swatches.length]}.svg`;
 };
 
-export const services = [
-  {
-    title: "Private Chef",
-    text: "A dedicated chef in your home or holiday rental, cooking menus shaped around your tastes and occasion.",
-    image: img("private-chef", 900, 1100),
-    href: "/private-chef",
-  },
-  {
-    title: "Private Dining",
-    text: "Multi-course dinners with table service, styled settings and wine pairing for intimate gatherings.",
-    image: img("private-dining", 900, 1100),
-    href: "/private-dining",
-  },
-  {
-    title: "Bespoke Catering",
-    text: "Canapés, grazing and full-service catering for celebrations, corporate events and weddings.",
-    image: img("catering", 900, 1100),
-    href: "/bespoke-catering",
-  },
+export const images = {
+  hero: img("cc-hero", 2400),
+  welcome: img("cc-welcome", 900),
+  chef: img("cc-chef", 900),
+  why1: img("cc-why-1", 800),
+  why2: img("cc-why-2", 800),
+};
+
+// Gluten-free, dairy-free and nut-free are confirmed in Joseph's bio.
+// TODO: confirm vegetarian and vegan; add halal or Jain only if guaranteed.
+export const dietary = ["Vegetarian", "Vegan", "Gluten-free", "Dairy-free", "Nut-free"];
+
+// From the client's brand description.
+export const values = [
+  { title: "Freshness & provenance", text: "Seasonal produce, sourced locally where we can." },
+  { title: "Craftsmanship", text: "Professional standards and detail in every menu." },
+  { title: "Authentic flavour", text: "Traditional spice and technique, cooked with modern ideas." },
+  { title: "Personal hospitality", text: "Your occasion, your guests, your budget, listened to." },
+  { title: "Consistency", text: "Reliable on the day, every time." },
 ];
 
-export const gallery = (prefix: string, count: number, size = 800) =>
-  Array.from({ length: count }, (_, i) => img(`${prefix}-${i + 1}`, size, size));
-
-// Sample testimonials only. Replace with genuine reviews from your customers.
-export const testimonials = [
-  { name: "Sample Client A", text: "Placeholder review text. Replace with a real customer quote." },
-  { name: "Sample Client B", text: "Placeholder review text. Replace with a real customer quote." },
-  { name: "Sample Client C", text: "Placeholder review text. Replace with a real customer quote." },
-  { name: "Sample Client D", text: "Placeholder review text. Replace with a real customer quote." },
-  { name: "Sample Client E", text: "Placeholder review text. Replace with a real customer quote." },
-  { name: "Sample Client F", text: "Placeholder review text. Replace with a real customer quote." },
-];
-
-// Menu PDFs. Put your files in /public/menus and update the paths.
-export const menus = [
-  { title: "Canapé Menu", href: "/menus/canape-menu.pdf" },
-  { title: "Long Table Shared Menu", href: "/menus/shared-menu.pdf" },
-  { title: "Tasting Menu (3–10 courses)", href: "/menus/tasting-menu.pdf" },
-];
+export const enquiryOptions = {
+  eventTypes: ["Birthday or celebration", "Corporate", "Boat party", "Wedding or engagement", "Dinner party", "Other"],
+  guests: ["Under 10", "10 to 25", "26 to 50", "51 to 100", "100+"],
+  format: ["Drop-off", "Chef on-site", "Not sure"],
+  dietary: ["Vegetarian", "Vegan", "Gluten-free", "Dairy-free", "Nut allergy", "Halal", "Jain", "Other"],
+  // Placeholder budget bands from the copy document; Joseph to set his own.
+  budget: ["Under $500", "$500 to $1,500", "$1,500 to $3,000", "$3,000+", "Not sure yet"],
+};
