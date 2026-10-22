@@ -11,6 +11,16 @@ export default function ContactForm({ services, defaultService }: { services: st
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error" | "invalid">("idle");
   const [firstName, setFirstName] = useState("");
   const serviceRef = useRef<HTMLSelectElement>(null);
+  const [errorText, setErrorText] = useState("");
+  // Earliest event date is today, in the visitor's own time zone. Set on the
+  // input after mount so a prerendered page never carries a stale date.
+  const dateRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    const d = new Date();
+    if (dateRef.current) {
+      dateRef.current.min = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+    }
+  }, []);
 
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
@@ -24,6 +34,7 @@ export default function ContactForm({ services, defaultService }: { services: st
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
+    setErrorText("");
     if (!form.checkValidity()) {
       form.reportValidity();
       setStatus("invalid");
@@ -42,6 +53,7 @@ export default function ContactForm({ services, defaultService }: { services: st
       setStatus("sent");
       form.reset();
     } else {
+      if (res?.status === 400) setErrorText((await res.json().catch(() => null))?.error ?? "");
       setStatus(res?.status === 400 ? "invalid" : "error");
     }
   }
@@ -83,7 +95,7 @@ export default function ContactForm({ services, defaultService }: { services: st
       </label>
       <label className={label}>
         Event date *
-        <input name="date" type="date" required className={`mt-1 ${field}`} />
+        <input ref={dateRef} name="date" type="date" required className={`mt-1 ${field}`} />
         <span className={help}>Not sure yet? Pick your best guess.</span>
       </label>
       <label className={label}>
@@ -188,7 +200,7 @@ export default function ContactForm({ services, defaultService }: { services: st
       <div className="text-center sm:col-span-2">
         {status === "invalid" && (
           <p role="alert" className="mb-4 text-sm text-red-700">
-            Something&apos;s missing. Check the highlighted fields and try again.
+            {errorText || "Something's missing. Check the highlighted fields and try again."}
           </p>
         )}
         {status === "error" && (
