@@ -2,7 +2,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { logo, site, tel } from "@/lib/site";
-import { getMenus, getServices, type PublicImage } from "@/lib/content";
+import { getMenus, getServices, type PublicImage, type PublicMenu } from "@/lib/content";
 import { getGoogleReviews } from "@/lib/google-reviews";
 import { benefits, groups, reasons, steps } from "@/content/services";
 import ContactForm from "./ContactForm";
@@ -67,16 +67,18 @@ export function PageHero({
           align === "left" ? "text-left" : "text-center"
         }`}
       >
+        {/* With the badge, the logo sits large on the left and the text to its right. */}
+        <div className={badge ? "flex flex-col gap-8 md:flex-row md:items-center md:gap-14" : ""}>
+        {badge && (
+          <img
+            src={logo.disc}
+            alt="The Coast & Cardamom Catering Co. badge"
+            width={320}
+            height={320}
+            className="h-44 w-44 shrink-0 rounded-full shadow-2xl sm:h-56 sm:w-56 lg:h-80 lg:w-80"
+          />
+        )}
         <div className={align === "left" ? "max-w-2xl" : "mx-auto max-w-4xl"}>
-          {badge && (
-            <img
-              src={logo.disc}
-              alt="The Coast & Cardamom Catering Co. badge"
-              width={160}
-              height={160}
-              className={`mb-6 h-28 w-28 rounded-full shadow-xl md:h-36 md:w-36 ${align === "left" ? "" : "mx-auto"}`}
-            />
-          )}
           {eyebrow && <p className="eyebrow !text-gold">{eyebrow}</p>}
           <h1 className="mt-3 font-serif text-[40px] leading-[1.15] md:text-[56px] md:leading-[64px]">{title}</h1>
           <Rule center={align !== "left"} />
@@ -89,6 +91,7 @@ export function PageHero({
               {cta.label}
             </a>
           )}
+        </div>
         </div>
       </div>
     </section>
@@ -301,6 +304,46 @@ export function HowItWorks() {
   );
 }
 
+export function MenuCard({ menu: m }: { menu: PublicMenu }) {
+  return (
+    <details className="group rounded-sm border border-line bg-white/60 open:md:col-span-2">
+      <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-6 py-6">
+        <span>
+          <span className="block text-xs font-semibold uppercase tracking-[0.2em] text-curry">{m.category}</span>
+          <span className="mt-1 block font-serif text-2xl">{m.title}</span>
+        </span>
+        <span className="text-2xl text-surf transition-transform group-open:rotate-45">+</span>
+      </summary>
+      <div className="grid gap-8 px-6 pb-8 md:grid-cols-[1fr_2fr]">
+        {m.image && <img src={m.image} alt={m.title} className="aspect-[4/5] w-full rounded-sm object-cover" />}
+        <div className={m.image ? "" : "md:col-span-2"}>
+          <p className="whitespace-pre-line text-muted">{m.description}</p>
+          {m.dishes.length > 0 && (
+            <ul className="mt-4 divide-y divide-line">
+              {m.dishes.map((d, i) => (
+                <li key={i} className="py-3">
+                  <p className="font-medium">
+                    {d.name}
+                    {d.dietary && (
+                      <span className="ml-2 rounded-full bg-cardamom/25 px-2 py-0.5 text-xs font-semibold text-curry">{d.dietary}</span>
+                    )}
+                  </p>
+                  {d.description && <p className="mt-1 text-sm text-muted">{d.description}</p>}
+                </li>
+              ))}
+            </ul>
+          )}
+          {m.pdfUrl && (
+            <a href={m.pdfUrl} target="_blank" rel="noreferrer" className="btn mt-6">
+              Download the {m.title} menu (PDF)
+            </a>
+          )}
+        </div>
+      </div>
+    </details>
+  );
+}
+
 export async function MenuSection({ group }: { group: string }) {
   const menus = await getMenus(group);
   if (menus.length === 0) return null;
@@ -310,43 +353,7 @@ export async function MenuSection({ group }: { group: string }) {
         <SectionIntro eyebrow="Sample menus" title="See what's on the table." center />
         <div className="mt-12 grid gap-6 md:grid-cols-2">
           {menus.map((m) => (
-            <details key={m.title} className="group rounded-sm border border-line bg-white/60 open:md:col-span-2">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-6 py-6">
-                <span>
-                  <span className="block text-xs font-semibold uppercase tracking-[0.2em] text-curry">{m.category}</span>
-                  <span className="mt-1 block font-serif text-2xl">{m.title}</span>
-                </span>
-                <span className="text-2xl text-surf transition-transform group-open:rotate-45">+</span>
-              </summary>
-              <div className="grid gap-8 px-6 pb-8 md:grid-cols-[1fr_2fr]">
-                {m.image && <img src={m.image} alt={m.title} className="aspect-[4/5] w-full rounded-sm object-cover" />}
-                <div className={m.image ? "" : "md:col-span-2"}>
-                  <p className="whitespace-pre-line text-muted">{m.description}</p>
-                  {m.dishes.length > 0 && (
-                    <ul className="mt-4 divide-y divide-line">
-                      {m.dishes.map((d, i) => (
-                        <li key={i} className="py-3">
-                          <p className="font-medium">
-                            {d.name}
-                            {d.dietary && (
-                              <span className="ml-2 rounded-full bg-cardamom/25 px-2 py-0.5 text-xs font-semibold text-curry">
-                                {d.dietary}
-                              </span>
-                            )}
-                          </p>
-                          {d.description && <p className="mt-1 text-sm text-muted">{d.description}</p>}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                  {m.pdfUrl && (
-                    <a href={m.pdfUrl} target="_blank" rel="noreferrer" className="btn mt-6">
-                      Download the {m.title} menu (PDF)
-                    </a>
-                  )}
-                </div>
-              </div>
-            </details>
+            <MenuCard key={m.title} menu={m} />
           ))}
         </div>
         <p className="mt-6 text-center text-sm text-muted">

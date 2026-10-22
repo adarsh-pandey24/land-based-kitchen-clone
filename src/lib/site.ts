@@ -10,9 +10,8 @@ export const site = {
   line: "Indian spice. Coastal table. Your place.",
   tagline: "Where the Coast Meets Spice.",
   yearsExperience: 16,
-  // TODO: number of countries Joseph has worked in. The "Countries" stat on the
-  // About page stays hidden until this is set, e.g. countriesWorked: 4.
-  countriesWorked: null as number | null,
+  // Countries Joseph has worked in (About page stats strip).
+  countriesWorked: 5 as number | null,
   region: "Gold Coast",
   location: "Gold Coast, QLD",
   serviceArea: "The Gold Coast and the hinterland. Further afield? Ask, and we'll quote travel.",
@@ -35,7 +34,7 @@ export const mapUrl = "https://www.google.com/maps/search/?api=1&query=Gold%20Co
 
 export const tel = `tel:${site.phone.replace(/\s/g, "")}`;
 
-// Header menu: seven pages. The four service pages sit under Catering services.
+// Header menu: six pages (Privacy Policy and Terms are linked in the footer). The four service pages sit under Catering services.
 export type NavItem = { label: string; href: string; children?: { label: string; href: string }[] };
 
 export const nav: NavItem[] = [
@@ -49,12 +48,12 @@ export const nav: NavItem[] = [
       { label: "Boards & Grazing", href: "/grazing-tables-boards" },
       { label: "Parties & Celebrations", href: "/party-catering" },
       { label: "Dining & Events", href: "/private-dining-events" },
+      { label: "View all menus", href: "/menus" },
     ],
   },
   { label: "Gallery", href: "/gallery" },
   { label: "Reviews & FAQs", href: "/reviews-faqs" },
   { label: "Contact", href: "/contact" },
-  { label: "Privacy Policy", href: "/legal" },
 ];
 
 export const logo = { badge: "/brand/badge.webp", disc: "/brand/badge-disc.webp" };

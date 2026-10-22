@@ -9,9 +9,11 @@ const quickLinks = [
   ["Home", "/"],
   ["About the Chef", "/about"],
   ["All services", "/services"],
+  ["Menus", "/menus"],
   ["Gallery", "/gallery"],
   ["Reviews & FAQs", "/reviews-faqs"],
   ["Contact", "/contact"],
+  ["Privacy Policy", "/legal#privacy"],
 ];
 
 const social = "flex h-9 w-9 items-center justify-center rounded-full border border-sea/30 hover:border-gold hover:text-gold";

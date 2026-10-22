@@ -60,6 +60,7 @@ export async function getServices(group?: string): Promise<Service[]> {
 }
 
 export type PublicMenu = {
+  group: string;
   title: string;
   category: string;
   description: string;
@@ -69,19 +70,20 @@ export type PublicMenu = {
 };
 
 // Menus for a service page: those assigned to the page plus those assigned to
-// every page (empty group). There is no static fallback: the section is hidden
-// until menus are published.
-export async function getMenus(group: string): Promise<PublicMenu[]> {
+// every page (empty group). Without a group, every published menu (the Menus
+// page). There is no static fallback: menus only show once published.
+export async function getMenus(group?: string): Promise<PublicMenu[]> {
   "use cache";
   cacheTag(tags.menus);
   return withFallback<PublicMenu[]>(
     "menus",
     async () => {
       const rows = await db.chefMenu.findMany({
-        where: { published: true, group: { in: [group, ""] } },
+        where: group ? { published: true, group: { in: [group, ""] } } : { published: true },
         orderBy: order,
       });
       return rows.map((r) => ({
+        group: r.group,
         title: r.title,
         category: r.category,
         description: r.description,
