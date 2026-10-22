@@ -2,6 +2,7 @@ import { db } from "@/lib/db";
 import { requireUser } from "@/lib/auth";
 import { PageHeader, Panel } from "@/components/admin/ui";
 import EnquiryList, { type EnquiryRow } from "./EnquiryList";
+import AutoRefresh from "@/components/admin/AutoRefresh";
 
 export const metadata = { title: "Enquiries" };
 
@@ -33,7 +34,8 @@ export default async function EnquiriesPage() {
   }));
   return (
     <>
-      <PageHeader title="Enquiries" description="Every enquiry sent from the website form, newest first." />
+      <AutoRefresh />
+      <PageHeader title="Enquiries" description="Every enquiry sent from the website form, newest first. Updates automatically." />
       <Panel>
         <EnquiryList enquiries={enquiries} />
       </Panel>

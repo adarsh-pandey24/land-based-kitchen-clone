@@ -10,6 +10,9 @@ export const site = {
   line: "Indian spice. Coastal table. Your place.",
   tagline: "Where the Coast Meets Spice.",
   yearsExperience: 16,
+  // TODO: number of countries Joseph has worked in. The "Countries" stat on the
+  // About page stays hidden until this is set, e.g. countriesWorked: 4.
+  countriesWorked: null as number | null,
   region: "Gold Coast",
   location: "Gold Coast, QLD",
   serviceArea: "The Gold Coast and the hinterland. Further afield? Ask, and we'll quote travel.",

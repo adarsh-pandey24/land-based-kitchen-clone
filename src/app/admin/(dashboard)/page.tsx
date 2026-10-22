@@ -2,6 +2,7 @@ import Link from "next/link";
 import { db } from "@/lib/db";
 import { requireUser } from "@/lib/auth";
 import { PageHeader, Panel } from "@/components/admin/ui";
+import AutoRefresh from "@/components/admin/AutoRefresh";
 
 export const metadata = { title: "Overview" };
 
@@ -27,6 +28,7 @@ export default async function AdminHome() {
 
   return (
     <>
+      <AutoRefresh />
       <PageHeader title="Overview" description={`Signed in as ${user.email}`} />
       <Panel>
         <Link

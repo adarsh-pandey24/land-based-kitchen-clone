@@ -41,6 +41,7 @@ const specialities = [
 const stats = [
   { value: String(site.yearsExperience), label: "Years cooking professionally" },
   { value: "AU & Asia", label: "Luxury hotels and restaurants" },
+  ...(site.countriesWorked ? [{ value: String(site.countriesWorked), label: "Countries" }] : []),
   { value: "100", label: "Guests at the largest buffet format" },
 ];
 
@@ -74,7 +75,9 @@ export default async function AboutPage() {
       )}
 
       <section className="bg-navy py-12 text-sea">
-        <dl className="mx-auto grid max-w-5xl gap-8 px-5 text-center sm:grid-cols-3">
+        <dl
+          className={`mx-auto grid max-w-6xl gap-8 px-5 text-center sm:grid-cols-2 ${stats.length === 4 ? "lg:grid-cols-4" : "lg:grid-cols-3"}`}
+        >
           {stats.map((s) => (
             <div key={s.label}>
               <dt className="sr-only">{s.label}</dt>
