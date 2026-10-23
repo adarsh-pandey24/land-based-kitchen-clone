@@ -7,9 +7,9 @@ import { groups } from "@/content/services";
 import { EnquirySection, PageHero, Rule } from "@/components/Sections";
 
 export const metadata: Metadata = {
-  title: { absolute: "Catering Services Gold Coast · Coast & Cardamom" },
+  title: { absolute: "Catering Services Gold Coast · The Coast & Cardamom" },
   description:
-    "Every Coast & Cardamom service in one place: Chakna & Tonic, boards and grazing tables, parties, barbecues, boat catering, cakes, canapés, tapas, Indian buffets and breakfast.",
+    "Every service from The Coast & Cardamom in one place: Chakna & Tonic, boards and grazing tables, parties, barbecues, boat catering, cakes, canapés, tapas, Indian buffets and breakfast.",
 };
 
 // All services, grouped by service page. Each card links to that service's

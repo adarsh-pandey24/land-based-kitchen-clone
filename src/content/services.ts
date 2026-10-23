@@ -1,7 +1,7 @@
 // Service pages and shared service copy, from "The Coast & Cardamom: Website
 // Skeleton & Copy". The 12 services below are the fallback content shown until
 // services are added in the admin panel (Admin > Catering services).
-import { img } from "@/lib/site";
+import { img, site } from "@/lib/site";
 
 export type GroupKey = "chakna-and-tonic" | "grazing-tables-boards" | "party-catering" | "private-dining-events";
 
@@ -48,7 +48,7 @@ export const groups: ServiceGroup[] = [
     image: img("cc-tile-grazing", 900),
     hero: {
       title: "Grazing Tables & Boards, Gold Coast",
-      line: "Boards from 6 guests, grazing tables for a crowd. Dropped off or styled on-site.",
+      line: "Boards from 6 guests, grazing tables for up to 100. Dropped off or styled on-site.", // demo
       image: img("cc-hero-grazing", 2400),
     },
     intro: {
@@ -57,7 +57,7 @@ export const groups: ServiceGroup[] = [
       images: [img("cc-intro-grazing-1", 800), img("cc-intro-grazing-2", 800)],
     },
     seo: {
-      title: "Grazing Tables & Boards Gold Coast · Coast & Cardamom",
+      title: "Grazing Tables & Boards Gold Coast · The Coast & Cardamom",
       description: "Cheese boards, charcuterie and styled grazing tables for parties and corporate events across the Gold Coast.",
     },
   },
@@ -145,7 +145,9 @@ const s = (v: Partial<Service> & Pick<Service, "group" | "title" | "slug" | "des
   ...v,
 });
 
-// Guest ranges marked "TODO" in the copy document are left out until confirmed.
+// DEMO CONTENT: guest ranges and sample dishes marked "demo" below are
+// placeholders so the site can be previewed. Replace them with Joseph's real
+// figures and dishes before launch.
 export const fallbackServices: Service[] = [
   s({
     group: "chakna-and-tonic",
@@ -154,9 +156,10 @@ export const fallbackServices: Service[] = [
     cardLine: "Ten Indian bar snacks and the tonic. You bring the drinks.",
     heading: "You bring the bottle. We bring the chakna.",
     description:
-      "Chakna is what India eats with a drink: spiced, crunchy, salty, impossible to stop at one. We bring ten small plates, fresh, plus chilled tonic water, and you pour your own gin, rum or whatever's in the cabinet.",
-    format: "Drop-off or on-site",
+      "Chakna is what India eats with a drink: spiced, crunchy, salty, impossible to stop at one. We drop off ten small plates, fresh, plus chilled tonic water, and you pour your own gin, rum or whatever's in the cabinet.",
+    format: "Drop-off",
     goodFor: "drinks parties, birthdays, after-work, boat days",
+    guests: "10 to 40", // demo
     sampleDishes: "masala peanuts, chilli paneer bites, chicken tikka skewers, pani puri, onion pakora",
     smallPrint: "We don't supply alcohol. BYO, always.",
     buttonLabel: "Book Chakna & Tonic",
@@ -171,6 +174,8 @@ export const fallbackServices: Service[] = [
       "Local and imported cheeses, cured meats, seasonal fruit, house pickles and crackers, styled on boards. Ideal when you want food out without anyone cooking.",
     format: "Drop-off",
     goodFor: "corporate lunches, weekend entertaining, pre-dinner drinks",
+    guests: "6 to 30", // demo
+    sampleDishes: "aged cheddar, triple-cream brie, prosciutto, spiced nuts, house mango chutney, lavash crackers", // demo
     buttonLabel: "Order a board",
   }),
   s({
@@ -183,6 +188,8 @@ export const fallbackServices: Service[] = [
       "Cheese, charcuterie, breads, dips, fruit and a few Indian surprises, laid out across your table and styled on the day. Feeds a crowd with zero plating.",
     format: "Set up on-site",
     goodFor: "corporate events, launches, engagement parties",
+    guests: "20 to 100", // demo
+    sampleDishes: "local cheeses, cured meats, tandoori chicken bites, beetroot hummus, seasonal fruit, breads", // demo
     buttonLabel: "Plan a grazing table",
   }),
   s({
@@ -193,9 +200,10 @@ export const fallbackServices: Service[] = [
     heading: "Your party, your menu.",
     description:
       "Tell us who's coming, what they love and what they can't eat. Joseph builds a menu around it, from casual share plates to a sit-down dinner, and you get to enjoy your own celebration.",
-    guests: "Up to 100",
+    guests: "10 to 100", // demo
     format: "Drop-off or on-site",
     goodFor: "milestone birthdays, anniversaries, engagements, baby showers",
+    sampleDishes: "butter chicken sliders, paneer tikka, prawn koliwada, saffron rice, mango kulfi", // demo
     buttonLabel: "Plan my celebration",
   }),
   s({
@@ -208,6 +216,7 @@ export const fallbackServices: Service[] = [
       "Marinated meats, seafood and vegetables cooked on the grill at your place, with salads, chutneys and breads on the side. Australian barbecue, Indian marinades.",
     format: "Chef on-site",
     goodFor: "backyard parties, long weekends, family gatherings",
+    guests: "15 to 60", // demo
     sampleDishes: "tandoori chicken, lamb seekh kebab, garlic prawn skewers, grilled corn with chilli butter",
     buttonLabel: "Book a barbecue",
   }),
@@ -221,6 +230,8 @@ export const fallbackServices: Service[] = [
       "Menus planned for small galleys, moving decks and no oven: grazing boxes, canapés and share plates packed for the trip. We deliver to the marina or cook on board where the boat allows.",
     format: "Delivered to marina or on board",
     goodFor: "charters, hens and bucks, corporate cruises",
+    guests: "10 to 40", // demo
+    sampleDishes: "grazing boxes, chicken tikka wraps, vegetable samosas, prawn cocktail cups, fruit platters", // demo
     buttonLabel: "Cater my boat day",
   }),
   s({
@@ -233,6 +244,9 @@ export const fallbackServices: Service[] = [
       "Designed cakes, dessert boxes and dessert tables, including Indian sweets alongside the usual favourites. Order on its own or add it to any menu.",
     format: "Drop-off",
     goodFor: "birthdays, weddings, office celebrations",
+    guests: "Serves 10 to 80", // demo
+    sampleDishes: "cardamom pistachio cake, mango cheesecake, gulab jamun, chocolate chai tart", // demo
+    smallPrint: "Please order at least 12 days ahead.",
     buttonLabel: "Order a cake",
   }),
   s({
@@ -245,6 +259,8 @@ export const fallbackServices: Service[] = [
       "Passed canapés for standing events, or a plated three- or four-course dinner cooked and served at your table. Hotel-level timing and presentation, without the restaurant bill for wine.",
     format: "Chef on-site",
     goodFor: "dinner parties, formal events, client dinners",
+    guests: "8 to 60", // demo
+    sampleDishes: "tandoori prawn canapés, beetroot and goat cheese tartlets, lamb rack with mint chutney, coconut panna cotta", // demo
     buttonLabel: "Plan a dinner",
   }),
   s({
@@ -257,6 +273,8 @@ export const fallbackServices: Service[] = [
       "A rolling menu of share plates that mixes Mediterranean tapas with Indian small plates. Everyone tries everything, and nobody's stuck with one main.",
     format: "Drop-off or on-site",
     goodFor: "long lunches, team dinners, date nights at home",
+    guests: "8 to 40", // demo
+    sampleDishes: "patatas bravas with chilli masala, chicken 65, grilled halloumi, prawn pil pil, pani puri", // demo
     buttonLabel: "Plan a tapas menu",
   }),
   s({
@@ -266,10 +284,11 @@ export const fallbackServices: Service[] = [
     cardLine: "Indian buffets for up to 100 guests.",
     heading: "A proper Indian spread, for up to 100.",
     description:
-      "Curries, biryani, tandoor, breads, chutneys and dessert, cooked fresh and served hot. Vegetarian, vegan and gluten-free dishes on every buffet, labelled.",
+      "Curries, biryani, tandoor, breads, chutneys and dessert, cooked fresh and served hot. Vegetarian (no eggs), gluten-free and dairy-free dishes on every buffet, labelled. Book large buffets at least 3 weeks ahead.",
     guests: "Up to 100",
-    format: "Drop-off or served",
+    format: "Drop-off under 15 guests, chef on-site for larger buffets",
     goodFor: "weddings, festivals, corporate events, community gatherings",
+    sampleDishes: "butter chicken, dal makhani, lamb rogan josh, vegetable biryani, garlic naan, gulab jamun", // demo
     buttonLabel: "Get a buffet quote",
   }),
   s({
@@ -282,6 +301,8 @@ export const fallbackServices: Service[] = [
       "Plated breakfasts for small groups or a full breakfast buffet for events, with Indian options like masala omelettes and dosa beside the eggs and pastries.",
     format: "Drop-off or on-site",
     goodFor: "morning meetings, retreats, the morning after a wedding",
+    guests: "10 to 60", // demo
+    sampleDishes: "masala omelette, mini dosa, croissants, avocado toast, fresh fruit, chai", // demo
     buttonLabel: "Book breakfast",
   }),
   s({
@@ -294,9 +315,9 @@ export const fallbackServices: Service[] = [
       "Joseph arrives with ingredients and equipment, cooks on location, serves your guests and leaves the kitchen clean. Works with any menu on this page.",
     guests: "Up to 50",
     format: "Chef on-site",
-    goodFor: "homes, holiday rentals, offices, venues without catering",
-    // TODO: Joseph to confirm set-up time and staff numbers.
-    smallPrint: "What's included: ingredients, cooking equipment, cooking and service at your venue, and clean-down.",
+    goodFor: "homes, outdoor events, bulk catering, offices, venues without catering",
+    // Demo: staff numbers and set-up time to be confirmed by Joseph.
+    smallPrint: "What's included: ingredients, cooking equipment, set-up 90 minutes before service, cooking and service at your venue, extra staff for over 30 guests, and clean-down.",
     buttonLabel: "Book on-site catering",
   }),
 ];
@@ -321,7 +342,7 @@ export const reasons = [
   { title: "Indian flavour, Australian formats", text: "Tapas, grazing tables, barbecues and boat days.", icon: "bowl" },
   { title: "Built around your guests", text: "Every dish labelled for dietary needs.", icon: "leaf" },
   { title: "Any size, any venue", text: "A board for 10 to a buffet for 100.", icon: "people" },
-  { title: "Hotel standards", text: "Timing, hygiene and presentation from 16 years in hotel kitchens.", icon: "star" },
+  { title: "Hotel standards", text: `Timing, hygiene and presentation from ${site.yearsExperience} years in hotel kitchens.`, icon: "star" },
 ] as const;
 
 // Shared FAQ answers. Numbers Joseph has not confirmed yet are left out.
@@ -331,19 +352,19 @@ export const faqGroups: { heading: string; items: { q: string; a: string }[] }[]
     items: [
       {
         q: "How far ahead should I book?",
-        a: "As early as you can for buffets and on-site events. Boards and Chakna & Tonic can usually be arranged at shorter notice. Peak dates (December, long weekends) go first.",
+        a: "Large buffets need at least 3 weeks' notice, and custom cakes at least 12 days. Boards and Chakna & Tonic can usually be arranged at shorter notice. Peak dates (December, long weekends) go first.",
       },
       {
         q: "Is there a minimum order?",
-        a: "Smaller gatherings can usually go with a board or Chakna & Tonic. Tell us your numbers in the form and we'll suggest what fits.",
+        a: "Our minimum order is 10 guests. Smaller gatherings can usually go with a board or Chakna & Tonic. Tell us your numbers in the form and we'll suggest what fits.", // demo
       },
       {
         q: "Which areas do you cover?",
-        a: "The Gold Coast, plus the hinterland. Further afield? Ask, and we'll quote travel.",
+        a: "The Gold Coast. Anywhere within 30 km has no travel fee. Further afield? Ask, and we'll add the travel to your quote.",
       },
       {
         q: "Is there a venue or travel fee?",
-        a: "Most Gold Coast addresses have no extra charge. Outside the area, or venues with special access needs, any travel or venue cost is shown on your quote before you book.",
+        a: "There is no travel fee within 30 km on the Gold Coast. Beyond 30 km, a per-kilometre travel fee applies. Any travel or venue cost is shown on your quote before you book.",
       },
     ],
   },
@@ -352,9 +373,9 @@ export const faqGroups: { heading: string; items: { q: string; a: string }[] }[]
     items: [
       {
         q: "How does pricing work?",
-        a: "Menus are priced per head, based on the dishes and service style. You'll get a full quote before anything is booked, and a deposit confirms the date.",
+        a: "Every menu is built for your event, so there's no set price list. Once we've talked through your guests, dishes and service style, you'll get a full quote before anything is booked. A deposit confirms the date.",
       },
-      { q: "How much is the deposit?", a: "The deposit amount is shown on your quote, before you book anything." },
+      { q: "How much is the deposit?", a: "A 30% deposit confirms your date. The balance is due 7 days before the event." }, // demo
       {
         q: "What if my guest numbers change?",
         a: "Tell us as soon as you know. We'll adjust the menu and the quote where we can. Your quote sets the date for final numbers.",
@@ -370,7 +391,7 @@ export const faqGroups: { heading: string; items: { q: string; a: string }[] }[]
     items: [
       {
         q: "Can you handle allergies and dietary needs?",
-        a: "Yes. We cook vegetarian, vegan, gluten-free, dairy-free, nut-free, halal and Jain, and label every dish. Tell us about serious allergies in the form so we can plan for them.",
+        a: "Yes. We cook halal, Jain, vegetarian (no eggs), dairy-free, gluten-free and nut-free, and label every dish. Tell us about serious allergies in the form so we can plan for them.",
       },
       { q: "Are dishes labelled?", a: "Yes. Every dish is labelled, so nobody has to ask what's in it." },
     ],
@@ -379,8 +400,12 @@ export const faqGroups: { heading: string; items: { q: string; a: string }[] }[]
     heading: "Service",
     items: [
       {
+        q: "Which services are drop-off and which are on-site?",
+        a: "Drop-off: corporate event meals, cheese and charcuterie boards, cakes, Chakna & Tonic, and Indian buffets for under 15 guests. Chef on-site: barbecue parties, bulk catering and outdoor events. Not sure which suits your event? Ask in the form.",
+      },
+      {
         q: "What do you bring?",
-        a: "Drop-off: the food, plus serving boards or platters. On-site: ingredients, cooking equipment, and Joseph.",
+        a: "Drop-off: the food, plus disposable serving boards or platters, so there's nothing to return. On-site: ingredients, cooking equipment, and Joseph, with extra staff for events over 30 guests.", // demo
       },
       { q: "Do you supply alcohol?", a: "No. Bring your own; Chakna & Tonic is designed for exactly that." },
       {
@@ -397,12 +422,14 @@ export const faqGroups: { heading: string; items: { q: string; a: string }[] }[]
 ];
 
 // FAQs shown on every service page (booking, areas, dietary, pricing, alcohol, what we bring).
+const faq = (q: string) => faqGroups.flatMap((g) => g.items).find((i) => i.q === q)!;
 export const serviceFaqs = [
-  faqGroups[0].items[0],
-  faqGroups[0].items[2],
-  faqGroups[2].items[0],
-  faqGroups[0].items[1],
-  faqGroups[1].items[0],
-  faqGroups[3].items[1],
-  faqGroups[3].items[0],
+  faq("How far ahead should I book?"),
+  faq("Which areas do you cover?"),
+  faq("Can you handle allergies and dietary needs?"),
+  faq("Is there a minimum order?"),
+  faq("How does pricing work?"),
+  faq("Which services are drop-off and which are on-site?"),
+  faq("Do you supply alcohol?"),
+  faq("What do you bring?"),
 ];

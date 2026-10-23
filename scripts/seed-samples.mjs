@@ -1,4 +1,4 @@
-// Adds sample gallery images and sample menus so the site can be previewed
+// Adds sample gallery images, menus and reviews so the site can be previewed
 // before the client's own photos and menus arrive. Every record is titled or
 // captioned "Sample" and can be deleted from the admin (Gallery / Chef menus).
 // Safe to re-run: existing samples (matched by slug or image URL) are skipped.
@@ -25,6 +25,17 @@ const gallery = [
   { id: 488, alt: "Colourful salad with peppers and red cabbage in a clay bowl", category: "private-dining-events" },
   { id: 493, alt: "Yoghurt with oats and fresh strawberries", category: "private-dining-events" },
   { id: 635, alt: "Enamel cups set out on a wooden table", category: "chakna-and-tonic" },
+];
+
+// Demo reviews so the reviews carousel can be previewed. They are NOT real
+// customer reviews: each is tagged "Sample review" on the site and must be
+// deleted (Admin > Testimonials) before launch.
+const reviews = [
+  { name: "Priya", role: "Burleigh Heads · 40th birthday · Sample review", text: "Joseph handled everything for forty guests, from the menu to the clean-up. The chilli paneer disappeared in minutes and every dish was labelled, so our vegan friends could relax." },
+  { name: "Mark", role: "Broadbeach · Office lunch · Sample review", text: "Ordered a grazing table for our team lunch. It arrived on time, looked incredible and the Indian twists had everyone talking. Easy to book and great communication." },
+  { name: "Sophie", role: "Hope Island · Boat day · Sample review", text: "Catering on a boat is tricky, but Joseph planned it perfectly. Grazing boxes, samosas and prawn cups, all packed for the trip. Not a crumb left by the end." },
+  { name: "Raj", role: "Robina · Family gathering · Sample review", text: "Booked the Indian buffet for sixty people. Halal and Jain dishes were clearly marked and the biryani was the best we have had outside India. Highly recommend." },
+  { name: "Emma", role: "Palm Beach · Drinks party · Sample review", text: "Chakna & Tonic was the easiest party I have ever hosted. Ten small plates, chilled tonic, and I actually got to talk to my guests all night." },
 ];
 
 const menus = [
@@ -107,13 +118,19 @@ try {
     });
     addedImages++;
   }
+  let addedReviews = 0;
+  for (const [i, r] of reviews.entries()) {
+    if (await db.testimonial.findFirst({ where: { clientName: r.name, roleOrCompany: r.role } })) continue;
+    await db.testimonial.create({ data: { clientName: r.name, roleOrCompany: r.role, content: r.text, published: true, sortOrder: 1000 + i * 10 } });
+    addedReviews++;
+  }
   let addedMenus = 0;
   for (const [i, m] of menus.entries()) {
     if (await db.chefMenu.findUnique({ where: { slug: m.slug } })) continue;
     await db.chefMenu.create({ data: { ...m, published: true, sortOrder: 1000 + i * 10 } });
     addedMenus++;
   }
-  console.log(`Sample gallery images added: ${addedImages}. Sample menus added: ${addedMenus}.`);
+  console.log(`Sample gallery images added: ${addedImages}. Sample menus added: ${addedMenus}. Sample reviews added: ${addedReviews}.`);
 } catch (error) {
   console.error("Could not add samples:", error instanceof Error ? error.message : error);
   process.exitCode = 1;

@@ -120,6 +120,21 @@ export async function getGallery(category: string | null, limit?: number): Promi
   );
 }
 
+export type PublicTestimonial = { name: string; text: string; role: string | null };
+
+export async function getTestimonials(): Promise<PublicTestimonial[]> {
+  "use cache";
+  cacheTag(tags.testimonials);
+  return withFallback<PublicTestimonial[]>(
+    "testimonials",
+    async () => {
+      const rows = await db.testimonial.findMany({ where: { published: true }, orderBy: order });
+      return rows.map((r) => ({ name: r.clientName, text: r.content, role: r.roleOrCompany }));
+    },
+    [],
+  );
+}
+
 export type PublicChef = {
   name: string;
   role: string;
@@ -128,15 +143,17 @@ export type PublicChef = {
   experience: string | null;
 };
 
-// About copy in Joseph's voice: the copy document's draft story combined with
-// the facts from his bio (16 years, luxury hotels in Australia and Asia).
+// About copy in Joseph's voice, from the client's brief: a chef from India who
+// loves exploring spice and balancing it with other cuisines. 15 years in hotel
+// kitchens (JW Marriott, Six Senses, Taj, Oberoi) in India and Australia.
+// TODO: add Joseph's hometown once confirmed.
 const fallbackChefs: PublicChef[] = [
   {
     name: "Joseph Raj",
     role: "Chef & owner",
     image: images.chef,
     biography:
-      "I grew up in India, where every gathering started in the kitchen and nobody left hungry. I've spent 16 years cooking in luxury restaurants and premium hotels across Australia and Asia, from banquets to fine dining.\n\nThe Gold Coast gave me produce I'd only dreamed about: prawns off the boat, Northern Rivers cheese, mangoes that taste like home. The Coast & Cardamom is what happens when those two kitchens meet.\n\nMy philosophy is simple: good food, thoughtfully made, and shared around the table.",
+      "I grew up in India, where every meal started with spice: toasted, ground and tasted until it was right. That curiosity never left me. For 15 years I've cooked in hotel kitchens in India and Australia, including JW Marriott, Six Senses, Taj Hotels and The Oberoi Group, from banquets for hundreds to fine dining.\n\nAlong the way I fell for other cuisines too: Mediterranean, modern Australian, European. I kept asking the same question. What happens when cardamom meets a coastal grill, or curry leaf meets a cheese board? The answer is the food I cook today. Each spice is balanced so it lifts the dish, not drowns it, and the result is modern cuisine with Indian roots.\n\nThe Gold Coast gave me the produce to do it: seafood off the boat, local cheese, fruit that tastes like home. The Coast & Cardamom is where those kitchens meet. Good food, thoughtfully made, and shared around your table.",
     experience: null,
   },
 ];

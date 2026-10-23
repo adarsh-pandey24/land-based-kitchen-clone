@@ -68,7 +68,7 @@ export default function ContactForm({ services, defaultService }: { services: st
       <div role="status" className="mt-10 rounded-sm bg-sea p-8 text-center">
         <p className="font-serif text-2xl">Got it, thanks{firstName ? ` ${firstName}` : ""}.</p>
         <p className="mt-3 text-muted">
-          Joseph will be in touch soon. Need something sooner? Call{" "}
+          Joseph will be in touch {site.replyTime}. Need something sooner? Call{" "}
           <a href={tel} className="text-surf underline">
             {site.phone}
           </a>

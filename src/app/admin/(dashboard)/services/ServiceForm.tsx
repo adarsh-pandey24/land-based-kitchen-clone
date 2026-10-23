@@ -32,7 +32,7 @@ export default function ServiceForm({ service }: { service?: CateringService }) 
       <div className="grid gap-6 sm:grid-cols-2">
         <TextField name="guests" label="Guests (optional)" defaultValue={service?.guests} hint="e.g. 10 to 50" />
         <TextField name="format" label="Format (optional)" defaultValue={service?.format} hint="e.g. Drop-off or on-site" />
-        <TextField name="priceLabel" label="Price label (optional)" defaultValue={service?.priceLabel} hint="e.g. From $45 per guest" />
+        <TextField name="priceLabel" label="Price note (internal)" defaultValue={service?.priceLabel} hint="Not shown on the website" />
         <TextField name="buttonLabel" label="Button label (optional)" defaultValue={service?.buttonLabel} hint="e.g. Book a barbecue" />
       </div>
       <TextField name="goodFor" label="Good for (optional)" defaultValue={service?.goodFor} hint="e.g. backyard parties, long weekends" />

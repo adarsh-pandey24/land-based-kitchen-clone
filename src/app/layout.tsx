@@ -17,7 +17,7 @@ const dmSans = DM_Sans({
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: { default: "Private Chef & Catering Gold Coast · Coast & Cardamom", template: `%s · ${site.name}` },
+  title: { default: "Private Chef & Catering Gold Coast · The Coast & Cardamom", template: `%s · ${site.name}` },
   description:
     "Hotel-trained chef Joseph Raj caters Gold Coast birthdays, boat days and corporate events. Grazing boards to Indian buffets for 100.",
 };

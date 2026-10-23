@@ -2,8 +2,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { logo, site, tel } from "@/lib/site";
-import { getMenus, getServices, type PublicImage, type PublicMenu } from "@/lib/content";
-import { getGoogleReviews } from "@/lib/google-reviews";
+import { getMenus, getServices, getTestimonials, type PublicImage, type PublicMenu } from "@/lib/content";
 import { benefits, groups, reasons, steps } from "@/content/services";
 import ContactForm from "./ContactForm";
 import Icon from "./Icon";
@@ -254,11 +253,11 @@ export async function ServiceBlocks({ group }: { group: string }) {
             <Rule />
             {s.cardLine && <p className="mt-6 text-lg font-medium">{s.cardLine}</p>}
             <p className={`whitespace-pre-line text-muted ${s.cardLine ? "mt-3" : "mt-6"}`}>{s.description}</p>
-            {(s.guests || s.format || s.goodFor || s.priceLabel) && (
+            {/* Prices are not shown on the website (client decision): quotes come after a conversation. */}
+            {(s.guests || s.format || s.goodFor) && (
               <dl className="mt-6 grid gap-4 sm:grid-cols-2">
                 {s.guests && <Fact label="Guests" value={s.guests} />}
                 {s.format && <Fact label="Format" value={s.format} />}
-                {s.priceLabel && <Fact label="Price" value={s.priceLabel} />}
                 {s.goodFor && <Fact label="Good for" value={s.goodFor} />}
               </dl>
             )}
@@ -431,7 +430,7 @@ export function Reasons() {
   return (
     <section className="bg-navy py-20 text-sea md:py-24">
       <div className="mx-auto max-w-7xl px-5">
-        <SectionIntro eyebrow="Why Coast & Cardamom" title="Why book Coast & Cardamom." center dark />
+        <SectionIntro eyebrow="Why The Coast & Cardamom" title="Why book The Coast & Cardamom." center dark />
         <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-5">
           {reasons.map((r) => (
             <div key={r.title} className="text-center">
@@ -448,114 +447,36 @@ export function Reasons() {
   );
 }
 
-// Google reviews carousel (live from Joseph's Google Business Profile).
-// Hidden until the Places API key and Place ID are configured and Google
-// returns at least one 4 or 5 star review.
-export async function GoogleReviewsCarousel() {
-  const data = await getGoogleReviews();
-  if (!data || data.reviews.length === 0) {
-    // Development only: show where the widget sits until Google is connected.
-    // Never shown on the live site, and never with made-up reviews.
-    return process.env.NODE_ENV === "development" ? <GoogleReviewsPreview connected={!!data} /> : null;
-  }
+// Reviews carousel: testimonials published in Admin > Testimonials.
+// Hidden until at least one is published.
+export async function ReviewsCarousel() {
+  const reviews = await getTestimonials();
+  if (reviews.length === 0) return null;
   return (
     <section id="reviews" className="scroll-mt-24 bg-shell py-20 md:py-24">
       <div className="mx-auto max-w-7xl px-5">
         <SectionIntro eyebrow="Reviews" title="What hosts say after the party." center />
         <div className="mt-12">
-          <Carousel label="Google reviews" slideClass="w-[85%] sm:w-[46%] lg:w-[31%]">
-            {data.reviews.map((r, i) => (
-              <figure key={`${r.author}-${i}`} className="flex h-full flex-col rounded-sm bg-sea p-7">
-                <figcaption className="flex items-center gap-3">
-                  {r.photo ? (
-                    <img src={r.photo} alt="" width={44} height={44} referrerPolicy="no-referrer" className="h-11 w-11 rounded-full" />
-                  ) : (
-                    <span className="flex h-11 w-11 items-center justify-center rounded-full bg-navy font-serif text-lg text-sea">
-                      {r.author.charAt(0)}
-                    </span>
-                  )}
+          <Carousel label="Client reviews" slideClass="w-[85%] sm:w-[46%] lg:w-[31%]">
+            {reviews.map((t, i) => (
+              <figure key={`${t.name}-${i}`} className="flex h-full flex-col rounded-sm bg-sea p-7">
+                <div className="text-[#f6bb06]" aria-label="5 out of 5 stars">
+                  ★★★★★
+                </div>
+                <blockquote className="mt-3 text-[15px] leading-relaxed">“{t.text}”</blockquote>
+                <figcaption className="mt-auto flex items-center gap-3 pt-6">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-navy font-serif text-lg text-sea">
+                    {t.name.charAt(0)}
+                  </span>
                   <span>
-                    {r.authorUrl ? (
-                      <a href={r.authorUrl} target="_blank" rel="noreferrer" className="block font-semibold hover:underline">
-                        {r.author}
-                      </a>
-                    ) : (
-                      <span className="block font-semibold">{r.author}</span>
-                    )}
-                    {r.when && <span className="block text-sm text-muted">{r.when}</span>}
+                    <span className="block font-semibold">{t.name}</span>
+                    {t.role && <span className="block text-sm text-muted">{t.role}</span>}
                   </span>
                 </figcaption>
-                <div className="mt-4 text-[#f6bb06]" aria-label={`${r.rating} out of 5 stars`}>
-                  {"★".repeat(r.rating)}
-                  <span className="text-line">{"★".repeat(5 - r.rating)}</span>
-                </div>
-                <blockquote className="mt-3 line-clamp-6 text-[15px] leading-relaxed">{r.text}</blockquote>
-                <p className="mt-auto pt-5 text-xs text-muted">Posted on Google</p>
               </figure>
             ))}
           </Carousel>
         </div>
-        <p className="mt-8 text-center text-sm text-muted">
-          {data.rating !== null && (
-            <>
-              <span className="font-semibold text-navy">{data.rating.toFixed(1)} stars</span> from{" "}
-              {data.mapsUrl ? (
-                <a href={data.mapsUrl} target="_blank" rel="noreferrer" className="underline">
-                  {data.total} Google reviews
-                </a>
-              ) : (
-                `${data.total} Google reviews`
-              )}
-              {" · "}
-            </>
-          )}
-          <a href={data.writeReviewUrl} target="_blank" rel="noreferrer" className="font-medium text-surf underline">
-            Leave a review
-          </a>
-        </p>
-      </div>
-    </section>
-  );
-}
-
-function GoogleReviewsPreview({ connected }: { connected: boolean }) {
-  return (
-    <section id="reviews" className="scroll-mt-24 bg-shell py-20 md:py-24">
-      <div className="mx-auto max-w-7xl px-5">
-        <SectionIntro eyebrow="Reviews" title="What hosts say after the party." center />
-        <p className="mx-auto mt-8 max-w-2xl rounded-sm border border-dashed border-gold-dark bg-sea px-4 py-3 text-center text-sm text-muted">
-          <strong className="text-navy">Development preview.</strong>{" "}
-          {connected
-            ? "Google is connected but returned no 4 or 5 star reviews yet."
-            : "Add GOOGLE_PLACES_API_KEY and GOOGLE_PLACE_ID to .env to load Joseph's Google reviews here."}{" "}
-          This section stays hidden on the live site until real reviews load.
-        </p>
-        <div className="mt-10">
-          <Carousel label="Google reviews (preview)" slideClass="w-[85%] sm:w-[46%] lg:w-[31%]">
-            {[1, 2, 3, 4].map((n) => (
-              <div key={n} aria-hidden className="flex h-full flex-col rounded-sm bg-sea p-7">
-                <div className="flex items-center gap-3">
-                  <span className="h-11 w-11 rounded-full bg-line" />
-                  <span className="space-y-2">
-                    <span className="block h-3 w-28 rounded bg-line" />
-                    <span className="block h-2.5 w-16 rounded bg-line" />
-                  </span>
-                </div>
-                <div className="mt-4 text-line">★★★★★</div>
-                <div className="mt-3 space-y-2">
-                  <span className="block h-2.5 w-full rounded bg-line" />
-                  <span className="block h-2.5 w-11/12 rounded bg-line" />
-                  <span className="block h-2.5 w-4/5 rounded bg-line" />
-                </div>
-                <p className="mt-auto pt-5 text-xs text-muted">Google review</p>
-              </div>
-            ))}
-          </Carousel>
-        </div>
-        <p className="mt-8 text-center text-sm text-muted">
-          <span className="font-semibold text-navy">[rating] stars</span> from [count] Google reviews ·{" "}
-          <span className="font-medium text-surf underline">Leave a review</span>
-        </p>
       </div>
     </section>
   );
@@ -592,7 +513,7 @@ export function FaqList({ items }: { items: { q: string; a: string }[] }) {
 }
 
 // Enquiry block at the foot of every page; "Plan your event" buttons link here.
-// Every page ends with the Google reviews carousel, then the enquiry form. "service"
+// Every page ends with the reviews carousel, then the enquiry form. "service"
 // pre-selects the form's service (used on single-service pages).
 export async function EnquirySection({
   eyebrow = "Plan your event",
@@ -606,11 +527,11 @@ export async function EnquirySection({
   const services = (await getServices()).map((s) => s.title);
   return (
     <>
-    <GoogleReviewsCarousel />
+    <ReviewsCarousel />
     <section id="enquire" className="scroll-mt-24 py-20 md:py-24">
       <div className="mx-auto max-w-5xl px-5">
         <SectionIntro eyebrow={eyebrow} title={title} center>
-          <p>Tell us about your event. Joseph replies personally with a menu idea and a quote.</p>
+          <p>Tell us about your event. Joseph replies personally {site.replyTime} to talk through your menu.</p>
         </SectionIntro>
         <div className="mt-12 rounded-sm bg-shell p-5 md:p-10">
           <p className="border-b border-navy bg-[#e3d9c6] py-3 text-center text-sm font-medium tracking-[0.15em]">
