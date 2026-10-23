@@ -6,7 +6,7 @@ import { groups } from "@/content/services";
 import { EnquirySection, MenuCard, PageHero, Rule } from "@/components/Sections";
 
 export const metadata: Metadata = {
-  title: { absolute: "Catering Menus Gold Coast · Coast & Cardamom" },
+  title: { absolute: "Catering Menus Gold Coast · The Coast & Cardamom" },
   description:
     "Sample menus from Chef Joseph Raj: Chakna & Tonic, grazing tables, barbecues, Indian buffets and more. Every menu is adjusted to your guests.",
 };

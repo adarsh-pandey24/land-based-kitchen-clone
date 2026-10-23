@@ -6,7 +6,7 @@ import { EnquirySection, PageHero } from "@/components/Sections";
 import GalleryFilter from "@/components/GalleryFilter";
 
 export const metadata: Metadata = {
-  title: { absolute: "Catering Gallery · Coast & Cardamom Gold Coast" },
+  title: { absolute: "Catering Gallery · The Coast & Cardamom Gold Coast" },
   description:
     "Real events cooked by Chef Joseph Raj: plated dinners, buffets, grazing tables and private dining on the Gold Coast.",
 };

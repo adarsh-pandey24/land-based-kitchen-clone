@@ -4,8 +4,8 @@ import { EnquirySection, PageHero, Rule } from "@/components/Sections";
 import Icon, { type IconName } from "@/components/Icon";
 
 export const metadata: Metadata = {
-  title: { absolute: "Contact · Coast & Cardamom Catering Gold Coast" },
-  description: "Tell us your date, guest count and dietary needs. Chef Joseph replies personally.",
+  title: { absolute: "Contact · The Coast & Cardamom Catering Gold Coast" },
+  description: `Tell us your date, guest count and dietary needs. Chef Joseph replies personally, ${site.replyTime}.`,
 };
 
 export default function ContactPage() {
@@ -24,7 +24,7 @@ export default function ContactPage() {
       <PageHero
         eyebrow="Plan your event"
         title="Tell us what you're planning."
-        line="Two minutes to fill in. Joseph replies personally with a menu idea and a quote."
+        line={`Two minutes to fill in. Joseph replies personally ${site.replyTime} to talk through your menu.`}
         image={img("cc-contact-hero", 2400)}
       />
 

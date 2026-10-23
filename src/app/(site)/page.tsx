@@ -43,8 +43,8 @@ export default async function Home() {
         <div>
         <SectionIntro eyebrow="Welcome to The Coast & Cardamom" title="Hotel-trained cooking, served at your place." center>
           <p>
-            Chef Joseph Raj spent {site.yearsExperience} years in luxury hotel and restaurant kitchens across
-            Australia and Asia. Now he cooks for Gold Coast birthdays, boat days, office lunches and dinner parties,
+            Chef Joseph Raj spent {site.yearsExperience} years in hotel kitchens in {site.countries}, including
+            JW Marriott, Six Senses, Taj and Oberoi. Now he cooks for Gold Coast birthdays, boat days, office lunches and dinner parties,
             with Indian spice and the best of local produce.
           </p>
           <p>
@@ -78,8 +78,8 @@ export default async function Home() {
         cta={{ label: "Read Joseph's story", href: "/about" }}
       >
         <p>
-          Joseph cooked in luxury hotels and restaurants across Australia and Asia before bringing it all to the
-          Gold Coast. He plans your menu, cooks it, and is usually the one plating it. You&apos;ll have his number, not a call
+          Joseph cooked in hotel kitchens in {site.countries}, blending Indian spice with the cuisines he met along
+          the way, before bringing it all to the Gold Coast. He plans your menu, cooks it, and is usually the one plating it. You&apos;ll have his number, not a call
           centre&apos;s.
         </p>
       </Split>

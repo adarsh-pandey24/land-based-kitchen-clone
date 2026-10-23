@@ -9,16 +9,21 @@ export const site = {
   chef: "Joseph Raj",
   line: "Indian spice. Coastal table. Your place.",
   tagline: "Where the Coast Meets Spice.",
-  yearsExperience: 16,
+  yearsExperience: 15,
   // Countries Joseph has worked in (About page stats strip).
-  countriesWorked: 5 as number | null,
+  countriesWorked: 2 as number | null,
+  countries: "India and Australia",
+  // Hotel groups Joseph has cooked for.
+  hotels: ["JW Marriott", "Six Senses", "Taj Hotels", "The Oberoi Group"],
+  // Reply time promised on the enquiry form and Contact page.
+  replyTime: "within 24 hours",
   region: "Gold Coast",
   location: "Gold Coast, QLD",
-  serviceArea: "The Gold Coast and the hinterland. Further afield? Ask, and we'll quote travel.",
+  serviceArea: "No travel fee within 30 km on the Gold Coast. Further out, a per-kilometre travel fee applies, shown on your quote.",
   phone: "+61 487 988 930",
   whatsapp: "61487988930",
   email: "thecoastncardamomau@gmail.com",
-  abn: "", // TODO: ABN to be confirmed
+  abn: "", // TODO: ABN applied for, expected in about a month
   hours: "", // TODO: enquiry hours
   socials: {
     instagram: "https://www.instagram.com/thecoastncardamom",
@@ -77,9 +82,8 @@ export const images = {
   why2: img("cc-why-2", 800),
 };
 
-// Gluten-free, dairy-free and nut-free are confirmed in Joseph's bio.
-// TODO: confirm vegetarian and vegan; add halal or Jain only if guaranteed.
-export const dietary = ["Vegetarian", "Vegan", "Gluten-free", "Dairy-free", "Nut-free"];
+// Dietary options the client guarantees. Vegetarian means no eggs.
+export const dietary = ["Halal", "Jain", "Vegetarian (no eggs)", "Dairy-free", "Gluten-free", "Nut-free"];
 
 // From the client's brand description.
 export const values = [
@@ -94,7 +98,7 @@ export const enquiryOptions = {
   eventTypes: ["Birthday or celebration", "Corporate", "Boat party", "Wedding or engagement", "Dinner party", "Other"],
   guests: ["Under 10", "10 to 25", "26 to 50", "51 to 100", "100+"],
   format: ["Drop-off", "Chef on-site", "Not sure"],
-  dietary: ["Vegetarian", "Vegan", "Gluten-free", "Dairy-free", "Nut allergy", "Halal", "Jain", "Other"],
+  dietary: ["Halal", "Jain", "Vegetarian (no eggs)", "Dairy-free", "Gluten-free", "Nut allergy", "Other"],
   // Placeholder budget bands from the copy document; Joseph to set his own.
   budget: ["Under $500", "$500 to $1,500", "$1,500 to $3,000", "$3,000+", "Not sure yet"],
 };

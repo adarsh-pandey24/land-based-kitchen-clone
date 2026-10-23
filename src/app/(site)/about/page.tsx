@@ -10,7 +10,7 @@ import Icon, { type IconName } from "@/components/Icon";
 export const metadata: Metadata = {
   title: { absolute: "Chef Joseph Raj · Private Chef Gold Coast" },
   description:
-    "Meet Joseph Raj: 16 years in luxury hotel kitchens across Australia and Asia, now cooking for Gold Coast homes, offices and boats.",
+    "Meet Joseph Raj: 15 years in hotel kitchens in India and Australia, including JW Marriott, Taj and Oberoi. Now cooking for Gold Coast homes, offices and boats.",
 };
 
 const principles = [
@@ -40,8 +40,8 @@ const specialities = [
 
 const stats = [
   { value: String(site.yearsExperience), label: "Years cooking professionally" },
-  { value: "AU & Asia", label: "Luxury hotels and restaurants" },
-  ...(site.countriesWorked ? [{ value: String(site.countriesWorked), label: "Countries" }] : []),
+  { value: "4", label: site.hotels.join(", ") },
+  ...(site.countriesWorked ? [{ value: String(site.countriesWorked), label: `Countries: ${site.countries}` }] : []),
   { value: "100", label: "Guests at the largest buffet format" },
 ];
 
@@ -60,7 +60,7 @@ export default async function AboutPage() {
       <PageHero
         eyebrow="Meet the chef"
         title="I'm Joseph. I'll be cooking for your guests."
-        line={`${site.yearsExperience} years in hotel kitchens across Australia and Asia. Now cooking for Gold Coast homes, offices and boats.`}
+        line={`${site.yearsExperience} years in hotel kitchens in ${site.countries}. Now cooking for Gold Coast homes, offices and boats.`}
         image={images.chef}
       />
 
@@ -164,7 +164,7 @@ export default async function AboutPage() {
       </section>
 
       <Split
-        eyebrow="Why choose Coast & Cardamom"
+        eyebrow="Why choose The Coast & Cardamom"
         title="One chef, from first enquiry to clean-up."
         image={[images.why1, images.why2]}
         reverse
