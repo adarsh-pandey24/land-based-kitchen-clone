@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { logo, site, tel } from "@/lib/site";
+import { logo, site, tel, values } from "@/lib/site";
 import { getMenus, getServices, getTestimonials, type PublicImage, type PublicMenu } from "@/lib/content";
 import { benefits, groups, reasons, steps } from "@/content/services";
 import ContactForm from "./ContactForm";
@@ -176,7 +176,7 @@ export function ChaknaBand() {
         <div>
           <p className="eyebrow !text-gold">Our signature</p>
           <h2 className="heading mt-3">
-            You bring the bottle. We bring the <em className="text-gold">chakna</em>.
+            You bring the pour. We bring the <em className="text-gold">crunch</em>.
           </h2>
           <Rule />
           <p className="mt-6 text-sea/80">
@@ -455,7 +455,7 @@ export async function ReviewsCarousel() {
   return (
     <section id="reviews" className="scroll-mt-24 bg-shell py-20 md:py-24">
       <div className="mx-auto max-w-7xl px-5">
-        <SectionIntro eyebrow="Reviews" title="What hosts say after the party." center />
+        <SectionIntro eyebrow="Reviews" title="Love from our tables." center />
         <div className="mt-12">
           <Carousel label="Client reviews" slideClass="w-[85%] sm:w-[46%] lg:w-[31%]">
             {reviews.map((t, i) => (
@@ -477,6 +477,34 @@ export async function ReviewsCarousel() {
             ))}
           </Carousel>
         </div>
+      </div>
+    </section>
+  );
+}
+
+// Core values as four staggered cards (home and About).
+export function CoreValues() {
+  return (
+    <section className="bg-shell py-20 md:py-24">
+      <div className="mx-auto max-w-7xl px-5">
+        <SectionIntro eyebrow="Our core values" title={site.tagline} center />
+        <ol className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {values.map((v, i) => (
+            <li
+              key={v.title}
+              className={`relative rounded-sm bg-sea p-7 ${i % 2 ? "lg:mt-10" : ""}`}
+            >
+              <span className="absolute right-6 top-4 font-serif text-5xl text-line" aria-hidden>
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <span className="flex h-12 w-12 items-center justify-center rounded-full bg-navy text-gold">
+                <Icon name={v.icon} />
+              </span>
+              <h3 className="mt-5 text-xl">{v.title}</h3>
+              <p className="mt-2 text-[15px] leading-relaxed text-muted">{v.text}</p>
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   );
@@ -531,7 +559,7 @@ export async function EnquirySection({
     <section id="enquire" className="scroll-mt-24 py-20 md:py-24">
       <div className="mx-auto max-w-5xl px-5">
         <SectionIntro eyebrow={eyebrow} title={title} center>
-          <p>Tell us about your event. Joseph replies personally {site.replyTime} to talk through your menu.</p>
+          <p>Share a few details below, we will get back to you {site.replyTime} to start building your event together.</p>
         </SectionIntro>
         <div className="mt-12 rounded-sm bg-shell p-5 md:p-10">
           <p className="border-b border-navy bg-[#e3d9c6] py-3 text-center text-sm font-medium tracking-[0.15em]">

@@ -1,10 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import type { Metadata } from "next";
 import Link from "next/link";
-import { images, site, values } from "@/lib/site";
+import { images, img, site } from "@/lib/site";
 import { getChefs, getGallery } from "@/lib/content";
 import { groups } from "@/content/services";
-import { EnquirySection, GalleryStrip, PageHero, Rule, SectionIntro, Split } from "@/components/Sections";
+import { CoreValues, EnquirySection, GalleryStrip, PageHero, Rule, SectionIntro, Split } from "@/components/Sections";
 import Icon, { type IconName } from "@/components/Icon";
 
 export const metadata: Metadata = {
@@ -61,7 +61,7 @@ export default async function AboutPage() {
         eyebrow="Meet the chef"
         title="I'm Joseph. I'll be cooking for your guests."
         line={`${site.yearsExperience} years in hotel kitchens in ${site.countries}. Now cooking for Gold Coast homes, offices and boats.`}
-        image={images.chef}
+        image={img("cc-about-hero", 2400)}
       />
 
       {joseph && (
@@ -131,19 +131,7 @@ export default async function AboutPage() {
 
       <GalleryStrip eyebrow="In the kitchen" title="Joseph at work." items={workPhotos} />
 
-      <section className="py-16">
-        <div className="mx-auto max-w-7xl px-5">
-          <SectionIntro eyebrow={site.tagline} title="What we stand for." center />
-          <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-            {values.map((v) => (
-              <li key={v.title} className="rounded-sm border border-line p-5">
-                <p className="font-semibold">{v.title}</p>
-                <p className="mt-1 text-[15px] text-muted">{v.text}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
+      <CoreValues />
 
       <section className="bg-shell py-20 md:py-24">
         <div className="mx-auto max-w-7xl px-5">

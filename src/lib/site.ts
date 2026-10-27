@@ -9,7 +9,7 @@ export const site = {
   chef: "Joseph Raj",
   line: "Indian spice. Coastal table. Your place.",
   tagline: "Where the Coast Meets Spice.",
-  yearsExperience: 15,
+  yearsExperience: 16,
   // Countries Joseph has worked in (About page stats strip).
   countriesWorked: 2 as number | null,
   countries: "India and Australia",
@@ -85,20 +85,43 @@ export const images = {
 // Dietary options the client guarantees. Vegetarian means no eggs.
 export const dietary = ["Halal", "Jain", "Vegetarian (no eggs)", "Dairy-free", "Gluten-free", "Nut-free"];
 
-// From the client's brand description.
+// Core values, in the client's words (amendments deck, slide 7).
 export const values = [
-  { title: "Freshness & provenance", text: "Seasonal produce, sourced locally where we can." },
-  { title: "Craftsmanship", text: "Professional standards and detail in every menu." },
-  { title: "Authentic flavour", text: "Traditional spice and technique, cooked with modern ideas." },
-  { title: "Personal hospitality", text: "Your occasion, your guests, your budget, listened to." },
-  { title: "Consistency", text: "Reliable on the day, every time." },
-];
+  {
+    title: "Freshness & provenance",
+    text: "Respect the ingredient, celebrate seasonal produce and prioritise local sourcing where practical.",
+    icon: "leaf",
+  },
+  {
+    title: "Craftsmanship",
+    text: "Bring professional standards, technical skill and attention to detail to every menu and event.",
+    icon: "chef",
+  },
+  {
+    title: "Authentic flavour",
+    text: "Honour traditional cooking methods and spice traditions while embracing modern creativity.",
+    icon: "bowl",
+  },
+  {
+    title: "Personalisation & hospitality",
+    text: "Listen to each client's needs and tailor the experience to their occasion, preferences and budget.",
+    icon: "people",
+  },
+] as const;
 
 export const enquiryOptions = {
-  eventTypes: ["Birthday or celebration", "Corporate", "Boat party", "Wedding or engagement", "Dinner party", "Other"],
+  // Event types in the client's wording (amendments deck, slide 9).
+  eventTypes: [
+    "Birthdays",
+    "Corporate events or working lunch",
+    "Cruise parties",
+    "Wedding / reception",
+    "Dinner events",
+    "BBQ",
+    "Cocktail dinner",
+    "Sit-down meal",
+    "Other",
+  ],
   guests: ["Under 10", "10 to 25", "26 to 50", "51 to 100", "100+"],
   format: ["Drop-off", "Chef on-site", "Not sure"],
-  dietary: ["Halal", "Jain", "Vegetarian (no eggs)", "Dairy-free", "Gluten-free", "Nut allergy", "Other"],
-  // Placeholder budget bands from the copy document; Joseph to set his own.
-  budget: ["Under $500", "$500 to $1,500", "$1,500 to $3,000", "$3,000+", "Not sure yet"],
 };

@@ -133,7 +133,7 @@ export default function EnquiryList({ enquiries }: { enquiries: EnquiryRow[] }) 
                       {e.name} <span className="font-normal text-muted">· {e.service}</span>
                     </span>
                     <span className="block truncate text-sm text-muted">
-                      {e.eventDate} · {e.guests} guests · {e.venue}
+                      {[e.eventDate, `${e.guests} guests`, e.venue].filter(Boolean).join(" · ")}
                     </span>
                   </span>
                   <span className="flex items-center gap-3 text-sm">
@@ -190,16 +190,19 @@ function EnquiryDetail({
   const [status, setStatus] = useState<Status>(e.status);
   const [notes, setNotes] = useState(e.notes ?? "");
   const dirty = status !== e.status || notes !== (e.notes ?? "");
-  const facts: [string, string][] = [
-    ["Event date", e.eventDate],
-    ["Event type", e.eventType],
-    ["Service", e.service],
-    ["Guests", e.guests],
-    ["Suburb or venue", e.venue],
-    ["Drop-off or on-site", e.format ?? "Not given"],
-    ["Dietary", e.dietary.length ? e.dietary.join(", ") : "None given"],
-    ["Budget", e.budget],
-  ];
+  // Venue and budget are only on enquiries sent before the form changed.
+  const facts = (
+    [
+      ["Event date", e.eventDate],
+      ["Event type", e.eventType],
+      ["Service", e.service],
+      ["Guests", e.guests],
+      ["Suburb or venue", e.venue],
+      ["Drop-off or on-site", e.format ?? "Not given"],
+      ["Dietary requirements", e.dietary.length ? e.dietary.join(", ") : "None given"],
+      ["Budget", e.budget],
+    ] as [string, string][]
+  ).filter(([, v]) => v);
 
   return (
     <div className="border-t border-line bg-mist/30 p-4 md:p-6">

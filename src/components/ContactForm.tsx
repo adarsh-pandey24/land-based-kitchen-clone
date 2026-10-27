@@ -42,14 +42,14 @@ export default function ContactForm({ services, defaultService }: { services: st
     }
     setStatus("sending");
     const data = new FormData(form);
-    const body = { ...Object.fromEntries(data), dietary: data.getAll("dietary") };
+    const body = Object.fromEntries(data);
     const res = await fetch("/api/contact", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     }).catch(() => null);
     if (res?.ok) {
-      setFirstName(String(data.get("name") ?? "").trim().split(/\s+/)[0]);
+      setFirstName(String(data.get("firstName") ?? "").trim());
       setStatus("sent");
       form.reset();
     } else {
@@ -81,8 +81,12 @@ export default function ContactForm({ services, defaultService }: { services: st
   return (
     <form onSubmit={onSubmit} noValidate className="relative mt-8 grid gap-5 sm:grid-cols-2">
       <label className={label}>
-        Your name *
-        <input name="name" required autoComplete="name" className={`mt-1 ${field}`} />
+        First name *
+        <input name="firstName" required autoComplete="given-name" className={`mt-1 ${field}`} />
+      </label>
+      <label className={label}>
+        Last name *
+        <input name="lastName" required autoComplete="family-name" className={`mt-1 ${field}`} />
       </label>
       <label className={label}>
         Email *
@@ -138,53 +142,34 @@ export default function ContactForm({ services, defaultService }: { services: st
           ))}
         </select>
       </label>
-      <label className={label}>
-        Suburb or venue *
-        <input name="venue" required className={`mt-1 ${field}`} />
-        <span className={help}>So we can confirm we service your area.</span>
-      </label>
 
       <fieldset className="sm:col-span-2">
         <legend className={label}>Drop-off or chef on-site?</legend>
         <div className="mt-2 flex flex-wrap gap-5">
           {enquiryOptions.format.map((o) => (
             <label key={o} className="flex items-center gap-2 text-[15px]">
-              <input type="radio" name="format" value={o} className="h-4 w-4 accent-[#14284b]" />
+              <input type="radio" name="format" value={o} className="h-4 w-4 accent-[#2f6b34]" />
               {o}
             </label>
           ))}
         </div>
       </fieldset>
 
-      <fieldset className="sm:col-span-2">
-        <legend className={label}>Dietary requirements</legend>
-        <div className="mt-2 flex flex-wrap gap-x-5 gap-y-2">
-          {enquiryOptions.dietary.map((o) => (
-            <label key={o} className="flex items-center gap-2 text-[15px]">
-              <input type="checkbox" name="dietary" value={o} className="h-4 w-4 accent-[#2f6b34]" />
-              {o}
-            </label>
-          ))}
-        </div>
-      </fieldset>
-
-      <label className={label}>
-        Total budget *
-        <select name="budget" required defaultValue="" className={`mt-1 ${field}`}>
-          <option value="" disabled>
-            Choose one
-          </option>
-          {enquiryOptions.budget.map((o) => (
-            <option key={o}>{o}</option>
-          ))}
-        </select>
+      <label className={`${label} sm:col-span-2`}>
+        Dietary requirements
+        <textarea
+          name="dietary"
+          rows={2}
+          placeholder="Allergies, halal, Jain, vegetarian (no eggs), gluten-free… anything we should plan for."
+          className={`mt-1 ${field}`}
+        />
       </label>
       <label className={`${label} sm:col-span-2`}>
-        Anything else?
+        Event details
         <textarea
           name="message"
           rows={4}
-          placeholder="Theme, timings, the guest who hates coriander."
+          placeholder="Venue, theme, timings, the guest who hates coriander."
           className={`mt-1 ${field}`}
         />
       </label>
@@ -209,7 +194,7 @@ export default function ContactForm({ services, defaultService }: { services: st
           </p>
         )}
         <button type="submit" disabled={status === "sending"} className="btn btn-arrow disabled:opacity-60">
-          {status === "sending" ? "Sending…" : "Send my enquiry"}
+          {status === "sending" ? "Sending…" : "Plan my event"}
         </button>
         <p className="mt-3 text-sm text-muted">No payment needed.</p>
       </div>
