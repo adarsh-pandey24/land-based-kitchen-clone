@@ -154,7 +154,7 @@ export const fallbackServices: Service[] = [
     title: "Chakna & Tonic",
     slug: "chakna-and-tonic",
     cardLine: "Ten Indian bar snacks and the tonic. You bring the drinks.",
-    heading: "You bring the bottle. We bring the chakna.",
+    heading: "You bring the pour. We bring the crunch.",
     description:
       "Chakna is what India eats with a drink: spiced, crunchy, salty, impossible to stop at one. We drop off ten small plates, fresh, plus chilled tonic water, and you pour your own gin, rum or whatever's in the cabinet.",
     format: "Drop-off",

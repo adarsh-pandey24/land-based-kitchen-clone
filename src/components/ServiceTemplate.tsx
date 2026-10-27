@@ -35,7 +35,7 @@ export default async function ServiceTemplate({ groupKey }: { groupKey: GroupKey
       <ServiceBlocks group={group.key} />
       <HowItWorks />
       <MenuSection group={group.key} />
-      <GalleryStrip eyebrow="From recent events" title={`${group.name}, from real events.`} items={galleryItems} />
+      <GalleryStrip eyebrow="From our recent events" title={`${group.name}, from real events.`} items={galleryItems} />
       <Benefits images={group.intro.images} />
       <Reasons />
       <GroupTiles eyebrow="Other ways we cater" title="More from the kitchen." exclude={group.key} />

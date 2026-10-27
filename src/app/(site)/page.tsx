@@ -1,9 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
-import { dietary, images, site } from "@/lib/site";
+import { images, site } from "@/lib/site";
 import { getChefs, getGallery } from "@/lib/content";
 import {
   ChaknaBand,
+  CoreValues,
   EnquirySection,
   GalleryStrip,
   GroupTiles,
@@ -12,28 +13,20 @@ import {
   Split,
 } from "@/components/Sections";
 
-const whyPoints = [
-  { title: "The chef is the caterer.", text: "Joseph plans, cooks and serves. No faceless kitchen." },
-  {
-    title: "Built around your guests.",
-    text: `${dietary.join(", ").replace(/, ([^,]*)$/, " and $1")}, every dish labelled.`,
-  },
-  {
-    title: "Any size, any venue.",
-    text: "A board on the coffee table, a barbecue in the backyard, a buffet for 100, or lunch on a boat.",
-  },
-  {
-    title: "Three steps, no stress.",
-    text: "Tell us the plan, get a tailored menu and quote, then enjoy your party. We clean up.",
-  },
-];
-
 export default async function Home() {
   const [galleryItems, chefs] = await Promise.all([getGallery(null, 12), getChefs()]);
   const chef = chefs[0];
   return (
     <>
-      <PageHero full badge align="left" title="Private chef & catering on the Gold Coast" line={site.line} image={images.hero} />
+      <PageHero
+        full
+        badge
+        align="left"
+        eyebrow={site.tagline}
+        title="Private chef & catering on the Gold Coast"
+        line="An elevated culinary experience designed around your unique taste."
+        image={images.hero}
+      />
 
       <section className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-20 md:grid-cols-[2fr_3fr] md:py-24">
         <div className="relative mx-auto w-full max-w-sm">
@@ -41,15 +34,25 @@ export default async function Home() {
           <img src={images.welcome} alt="" className="relative aspect-[4/5] w-full rounded-sm object-cover" />
         </div>
         <div>
-        <SectionIntro eyebrow="Welcome to The Coast & Cardamom" title="Hotel-trained cooking, served at your place." center>
+        <SectionIntro eyebrow="Welcome to The Coast & Cardamom" title="Bespoke culinary experiences, brought to you." center>
           <p>
-            Chef Joseph Raj spent {site.yearsExperience} years in hotel kitchens in {site.countries}, including
-            JW Marriott, Six Senses, Taj and Oberoi. Now he cooks for Gold Coast birthdays, boat days, office lunches and dinner parties,
-            with Indian spice and the best of local produce.
+            Inspired by the beauty of Queensland&apos;s Gold Coast and the aromatic warmth of cardamom, The Coast &amp;
+            Cardamom Catering Co. brings together modern Australian cuisine, contemporary Indian flavours and the art of
+            slow cooking.
           </p>
           <p>
-            Every menu starts with your guest list: who&apos;s coming, what they love, and what they can&apos;t eat.
-            Grazing boards for 10, buffets for 100, and everything in between.
+            Founded by Chef Joseph, with {site.yearsExperience} years of culinary experience, specialising in
+            farm-to-table dining, fine dining, bespoke menu curation, barbecue and personalised catering, Chef Joseph
+            crafts memorable food experiences for weddings, private celebrations, corporate events and gatherings of
+            every size.
+          </p>
+          <p>
+            Driven by quality ingredients, bold flavours, refined presentation and genuine hospitality, we believe every
+            occasion deserves something extraordinary.
+          </p>
+          <p className="font-semibold text-navy">
+            More than catering, we bring people together through food, crafted with passion, inspired by the coast and
+            enriched with spice.
           </p>
         </SectionIntro>
         <div className="mt-8 text-center">
@@ -62,7 +65,9 @@ export default async function Home() {
 
       <GroupTiles eyebrow="What we cater" title="Four ways to feed your guests." />
       <div className="bg-shell px-5 pb-16 text-center">
-        <p className="text-muted">Drop-off or chef on-site. Every menu built around your guests&apos; dietary needs.</p>
+        <p className="text-lg font-semibold text-navy md:text-xl">
+          Drop-off or chef on-site. Every menu built around your guests&apos; dietary needs.
+        </p>
         <Link href="/services" className="btn mt-6">
           See all 12 services
         </Link>
@@ -72,42 +77,32 @@ export default async function Home() {
 
       <Split
         eyebrow="Meet the chef"
-        title="A hotel chef, cooking in your kitchen."
+        title="World-class hospitality, right at your dining table."
         image={chef?.image ?? images.chef}
         reverse
-        cta={{ label: "Read Joseph's story", href: "/about" }}
       >
         <p>
-          Joseph cooked in hotel kitchens in {site.countries}, blending Indian spice with the cuisines he met along
-          the way, before bringing it all to the Gold Coast. He plans your menu, cooks it, and is usually the one plating it. You&apos;ll have his number, not a call
-          centre&apos;s.
+          Chef Joseph is a trained Executive Chef and the founder of The Coast &amp; Cardamom, bringing over{" "}
+          {site.yearsExperience} years of extensive culinary experience across multiple luxury hotel brands. Having
+          worked closely alongside Michelin-starred chefs, his culinary repertoire is built on precision, creativity,
+          and a deep respect for diverse flavours.
+        </p>
+        <p>
+          His expertise spans fine dining, large-scale bulk catering, and the delicate art of slow-cooking meats to
+          perfection. Most recently, he served as the Restaurant Chef at a prestigious 2-hatted restaurant specialising
+          in modern Australian cuisine.
         </p>
       </Split>
 
       <div className="bg-shell">
-        <GalleryStrip eyebrow="From recent events" title="Real food from real Gold Coast events." items={galleryItems} />
+        <GalleryStrip
+          eyebrow="From our recent events"
+          title="Locally grown, custom curated and catered for your perfect event."
+          items={galleryItems}
+        />
       </div>
 
-      <section className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-20 md:grid-cols-2 md:py-24">
-        <div className="grid gap-4">
-          <img src={images.why1} alt="" className="aspect-[4/3] w-full rounded-sm object-cover" />
-          <img src={images.why2} alt="" className="aspect-[4/3] w-full rounded-sm object-cover" />
-        </div>
-        <div>
-          <SectionIntro eyebrow="Why us" title="Indian flavour, Australian formats, one chef who cares." />
-          <ul className="mt-8 space-y-5">
-            {whyPoints.map((p) => (
-              <li key={p.title}>
-                <p className="font-semibold">{p.title}</p>
-                <p className="text-muted">{p.text}</p>
-              </li>
-            ))}
-          </ul>
-          <a href="#enquire" className="btn mt-8">
-            Plan your event
-          </a>
-        </div>
-      </section>
+      <CoreValues />
 
       <EnquirySection />
     </>

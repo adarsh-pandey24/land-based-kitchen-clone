@@ -1,6 +1,7 @@
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from "@/lib/db";
+import { notifyNewEnquiry } from "@/lib/notify";
 
 const optional = (max: number) =>
   z
@@ -18,7 +19,8 @@ const earliestDate = () => {
 };
 
 const enquiry = z.object({
-  name: z.string().trim().min(1).max(120),
+  firstName: z.string().trim().min(1).max(60),
+  lastName: z.string().trim().min(1).max(60),
   email: z.email().max(200),
   phone: z.string().trim().min(6).max(40),
   date: z
@@ -29,16 +31,15 @@ const enquiry = z.object({
   eventType: z.string().trim().min(1).max(80),
   service: z.string().trim().min(1).max(120),
   guests: z.string().trim().min(1).max(40),
-  venue: z.string().trim().min(1).max(200),
   format: optional(40),
-  dietary: z.array(z.string().trim().max(40)).max(20).optional().default([]),
-  budget: z.string().trim().min(1).max(40),
+  dietary: optional(1000),
   message: optional(5000),
   // Honeypot: hidden from people, filled in by bots.
   company: z.string().optional(),
 });
 
-// Saves enquiries from ContactForm. They appear in Admin > Enquiries.
+// Saves enquiries from ContactForm (they appear in Admin > Enquiries) and
+// emails them to Joseph when email is configured (see src/lib/notify.ts).
 export async function POST(request: Request) {
   const parsed = enquiry.safeParse(await request.json().catch(() => null));
   if (!parsed.success) {
@@ -48,15 +49,26 @@ export async function POST(request: Request) {
       { status: 400 },
     );
   }
-  const { company, date, ...data } = parsed.data;
+  const { company, date, firstName, lastName, dietary, ...rest } = parsed.data;
   if (company) return NextResponse.json({ ok: true }); // silently drop bot submissions
 
+  // Venue and budget were removed from the form; their columns stay for older enquiries.
+  const data = {
+    ...rest,
+    name: `${firstName} ${lastName}`,
+    eventDate: date,
+    dietary: dietary ? [dietary] : [],
+    venue: "",
+    budget: "",
+  };
   try {
-    const saved = await db.enquiry.create({ data: { ...data, eventDate: date } });
+    const saved = await db.enquiry.create({ data });
     console.log("New enquiry saved", saved.id);
   } catch (error) {
     console.error("[enquiry] Could not save enquiry", error);
     return NextResponse.json({ error: "Your enquiry didn't send. Please call or email us." }, { status: 500 });
   }
+  // Email after responding, so the visitor never waits on the mail service.
+  after(() => notifyNewEnquiry({ ...data, dietary }));
   return NextResponse.json({ ok: true });
 }

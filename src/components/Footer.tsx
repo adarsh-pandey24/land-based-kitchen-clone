@@ -27,9 +27,9 @@ export default function Footer() {
           <div className="mt-5">
             <Wordmark />
           </div>
-          <p className="mt-4 font-serif text-lg italic text-gold">{site.tagline}</p>
+          <p className="mt-4 font-script text-xl tracking-wide text-gold">{site.tagline}</p>
           <p className="mt-3 text-[15px] leading-relaxed">
-            Private chef and catering on the Gold Coast. Indian spice, coastal produce, and home of Chakna &amp; Tonic.
+            An elevated culinary experience designed around your unique taste.
           </p>
         </div>
 
@@ -47,7 +47,7 @@ export default function Footer() {
         </div>
 
         <div>
-          <p className="eyebrow !text-gold">Catering</p>
+          <p className="eyebrow !text-gold">Services</p>
           <ul className="mt-5 space-y-3 text-[15px]">
             {groups.map((g) => (
               <li key={g.key}>
