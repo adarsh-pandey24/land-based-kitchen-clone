@@ -27,7 +27,7 @@ export default function Footer() {
           <div className="mt-5">
             <Wordmark />
           </div>
-          <p className="mt-4 font-script text-xl tracking-wide text-gold">{site.tagline}</p>
+          <p className="mt-4 font-serif text-lg italic text-gold">{site.tagline}</p>
           <p className="mt-3 text-[15px] leading-relaxed">
             An elevated culinary experience designed around your unique taste.
           </p>
