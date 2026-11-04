@@ -278,6 +278,15 @@ export async function ServiceBlocks({ group }: { group: string }) {
               {s.buttonLabel || `Enquire about ${s.title}`}
             </a>
           </div>
+          {s.gallery && (
+            <ul className="grid grid-cols-2 gap-4 md:col-span-2 md:grid-cols-4">
+              {s.gallery.map((g) => (
+                <li key={g.src}>
+                  <img src={g.src} alt={g.alt} className="aspect-[4/5] w-full rounded-sm object-cover" />
+                </li>
+              ))}
+            </ul>
+          )}
         </article>
       ))}
     </section>
