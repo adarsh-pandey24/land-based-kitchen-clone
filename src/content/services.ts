@@ -23,11 +23,11 @@ export const groups: ServiceGroup[] = [
     name: "Chakna & Tonic",
     href: "/chakna-and-tonic",
     tileLine: "Ten Indian bar snacks and the tonic. You bring the drinks.",
-    image: img("cc-tile-chakna", 900),
+    image: "/images/chakna-and-tonic.webp",
     hero: {
       title: "Chakna & Tonic",
       line: "Ten Indian bar snacks and the tonic. You bring the drinks.",
-      image: img("cc-hero-chakna", 2400),
+      image: "/images/chakna-and-tonic.webp",
     },
     intro: {
       title: "The snack table your friends will talk about.",
@@ -129,6 +129,7 @@ export type Service = {
   sampleDishes: string | null;
   smallPrint: string | null;
   buttonLabel: string | null;
+  gallery?: { src: string; alt: string }[];
 };
 
 const s = (v: Partial<Service> & Pick<Service, "group" | "title" | "slug" | "description">): Service => ({
@@ -153,6 +154,7 @@ export const fallbackServices: Service[] = [
     group: "chakna-and-tonic",
     title: "Chakna & Tonic",
     slug: "chakna-and-tonic",
+    image: "/images/chakna-and-tonic.webp",
     cardLine: "Ten Indian bar snacks and the tonic. You bring the drinks.",
     heading: "You bring the pour. We bring the crunch.",
     description:
@@ -253,6 +255,13 @@ export const fallbackServices: Service[] = [
     group: "private-dining-events",
     title: "Canapés & Plated Dining",
     slug: "canapes-plated-dining",
+    image: "/images/canapes-salmon-flowers.webp",
+    gallery: [
+      { src: "/images/canapes-table-spread.webp", alt: "A table set with plated dishes, sauces and drinks" },
+      { src: "/images/canapes-tortellini.webp", alt: "Plated tortellini with tomato and orange sauce" },
+      { src: "/images/canapes-salmon-champagne.webp", alt: "Plated salmon and scallops with two glasses of sparkling wine" },
+      { src: "/images/canapes-lamb-shank.webp", alt: "Plated lamb shank with root vegetables and an orange drink" },
+    ],
     cardLine: "Canapés and three- or four-course dinners, served.",
     heading: "Restaurant service in your own dining room.",
     description:

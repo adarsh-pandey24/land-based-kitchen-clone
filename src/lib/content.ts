@@ -47,7 +47,7 @@ export type { Service };
 export async function getServices(group?: string): Promise<Service[]> {
   "use cache";
   cacheTag(tags.services);
-  const all = await withFallback(
+  const all = await withFallback<Service[]>(
     "services",
     async () => {
       if ((await db.cateringService.count()) === 0) return null;

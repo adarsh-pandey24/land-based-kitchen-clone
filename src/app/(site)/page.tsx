@@ -1,7 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
-import type { CSSProperties } from "react";
-import { Playfair_Display, Poppins } from "next/font/google";
 import { images, site } from "@/lib/site";
 import { getChefs, getGallery } from "@/lib/content";
 import {
@@ -15,22 +13,11 @@ import {
   Split,
 } from "@/components/Sections";
 
-// Home page only: Playfair Display for headings, Poppins for body text.
-const playfair = Playfair_Display({ variable: "--font-playfair", subsets: ["latin"] });
-const poppins = Poppins({ variable: "--font-poppins", subsets: ["latin"], weight: ["300", "400", "500", "600"] });
-// The site styles read these variables, so remapping them here swaps the fonts
-// for everything inside the home page without touching other pages.
-const homeFonts = {
-  "--font-dm-serif": "var(--font-playfair)",
-  "--font-dm-sans": "var(--font-poppins)",
-  fontFamily: "var(--font-poppins), sans-serif",
-} as CSSProperties;
-
 export default async function Home() {
   const [galleryItems, chefs] = await Promise.all([getGallery(null, 12), getChefs()]);
   const chef = chefs[0];
   return (
-    <div className={`${playfair.variable} ${poppins.variable}`} style={homeFonts}>
+    <>
       <PageHero
         full
         badge
@@ -118,6 +105,6 @@ export default async function Home() {
       <CoreValues />
 
       <EnquirySection />
-    </div>
+    </>
   );
 }
