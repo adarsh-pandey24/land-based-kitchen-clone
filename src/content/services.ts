@@ -2,6 +2,7 @@
 // Skeleton & Copy". The 12 services below are the fallback content shown until
 // services are added in the admin panel (Admin > Catering services).
 import { img, site } from "@/lib/site";
+import type { IconName } from "@/components/Icon";
 
 export type GroupKey = "chakna-and-tonic" | "grazing-tables-boards" | "party-catering" | "private-dining-events";
 
@@ -330,6 +331,22 @@ export const fallbackServices: Service[] = [
     buttonLabel: "Book on-site catering",
   }),
 ];
+
+// Icons for the home page service grid, by service slug.
+export const serviceIcons: Record<string, IconName> = {
+  "chakna-and-tonic": "glass",
+  "cheese-charcuterie-boards": "cheese",
+  "grazing-tables": "board",
+  "birthday-parties": "gift",
+  "barbecue-parties": "flame",
+  "boat-catering": "boat",
+  "cakes-desserts": "cake",
+  "canapes-plated-dining": "cloche",
+  "tapas-dining": "plates",
+  "indian-buffet": "bowl",
+  "breakfast-catering": "coffee",
+  "on-site-catering": "chef",
+};
 
 export const steps = [
   { title: "Tell us the plan.", text: "Date, guest count, venue, and anyone with allergies. The form takes two minutes." },

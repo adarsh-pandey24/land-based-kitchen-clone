@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
-// Pages from the original template, redirected to their new equivalents.
+// Pages from the original template and removed pages, redirected to their new equivalents.
 const oldRoutes: [string, string][] = [
+  ["/gallery", "/#gallery"],
   ["/about-us", "/about"],
   ["/private-chef", "/private-dining-events"],
   ["/private-dining", "/private-dining-events"],

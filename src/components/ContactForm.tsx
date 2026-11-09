@@ -59,7 +59,7 @@ export default function ContactForm({ services, defaultService }: { services: st
   }
 
   const field =
-    "w-full rounded-sm border border-line bg-sea px-4 py-3 text-navy placeholder:text-muted focus:border-surf focus:outline-none focus:ring-1 focus:ring-surf";
+    "w-full rounded-sm border border-line bg-sea px-4 py-3 text-navy focus:border-surf focus:outline-none focus:ring-1 focus:ring-surf";
   const label = "block text-sm font-medium";
   const help = "mt-1 block text-xs text-muted";
 
@@ -160,7 +160,6 @@ export default function ContactForm({ services, defaultService }: { services: st
         <textarea
           name="dietary"
           rows={2}
-          placeholder="Allergies, halal, Jain, vegetarian (no eggs), gluten-free… anything we should plan for."
           className={`mt-1 ${field}`}
         />
       </label>
@@ -169,7 +168,6 @@ export default function ContactForm({ services, defaultService }: { services: st
         <textarea
           name="message"
           rows={4}
-          placeholder="Venue, theme, timings, the guest who hates coriander."
           className={`mt-1 ${field}`}
         />
       </label>

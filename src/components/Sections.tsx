@@ -3,7 +3,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { logo, site, tel, values } from "@/lib/site";
 import { getMenus, getServices, getTestimonials, type PublicImage, type PublicMenu } from "@/lib/content";
-import { benefits, groups, reasons, steps } from "@/content/services";
+import { benefits, groupByKey, groups, reasons, serviceIcons, steps } from "@/content/services";
 import ContactForm from "./ContactForm";
 import Icon from "./Icon";
 import Carousel from "./Carousel";
@@ -169,59 +169,27 @@ export function GroupTiles({ exclude, title, eyebrow }: { exclude?: string; titl
   );
 }
 
-export function ChaknaBand() {
+// Home page: every service as an icon, linking to its block on the service page.
+export async function ServiceIcons({ eyebrow, title }: { eyebrow: string; title: string }) {
+  const services = await getServices();
   return (
-    <section className="bg-navy text-sea">
-      <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-20 md:grid-cols-2 md:py-24">
-        <div>
-          <p className="eyebrow !text-gold">Our signature</p>
-          <h2 className="heading mt-3">
-            You bring the pour. We bring the <em className="text-gold">crunch</em>.
-          </h2>
-          <Rule />
-          <p className="mt-6 text-sea/80">
-            In India, nobody drinks without chakna: the spiced, crunchy, salty small plates that keep everyone at the
-            table. We make ten of them, fresh, and bring the tonic. You pour whatever you like.
-          </p>
-          <ul className="mt-6 space-y-2 text-sea/90">
-            {["Ten small plates, made fresh", "Chilled tonic water included", "BYO drinks, always"].map((t) => (
-              <li key={t} className="flex items-center gap-3">
-                <span className="h-2 w-2 rounded-full bg-gold" />
-                {t}
-              </li>
-            ))}
-          </ul>
-          <Link href="/chakna-and-tonic" className="btn-gold btn-arrow mt-8">
-            See Chakna &amp; Tonic
-          </Link>
-        </div>
-        <ChaknaPlates />
+    <section className="bg-shell py-20 md:py-24">
+      <div className="mx-auto max-w-7xl px-5">
+        <SectionIntro eyebrow={eyebrow} title={title} center />
+        <ul className="mt-12 grid grid-cols-3 gap-x-3 gap-y-8 md:grid-cols-4 md:gap-x-6 md:gap-y-10 lg:grid-cols-6">
+          {services.map((s) => (
+            <li key={s.slug}>
+              <Link href={`${groupByKey(s.group)?.href ?? "/services"}#${s.slug}`} className="group flex flex-col items-center text-center">
+                <span className="flex h-16 w-16 items-center justify-center rounded-full bg-navy text-gold transition-transform group-hover:scale-105 md:h-20 md:w-20">
+                  <Icon name={serviceIcons[s.slug] ?? "bowl"} className="h-8 w-8 md:h-10 md:w-10" />
+                </span>
+                <h3 className="mt-3 text-[13px] leading-snug md:text-[15px]">{s.title}</h3>
+              </Link>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
-  );
-}
-
-// The ten-plate motif from the brand guidelines (page 13). Sample dishes are
-// suggestions for Joseph to confirm; the rest show as numbered plates.
-const chaknaDishes = ["Masala peanuts", "Chilli paneer", "Tikka skewers", "Pani puri", "Onion pakora"];
-
-function ChaknaPlates() {
-  return (
-    <div>
-      <ul className="grid grid-cols-3 gap-3 sm:grid-cols-5 md:gap-4" aria-label="Sample chakna plates">
-        {Array.from({ length: 10 }, (_, i) => (
-          <li
-            key={i}
-            className={`flex aspect-square items-center justify-center rounded-full border-2 border-gold p-2 text-center text-xs leading-tight md:text-sm ${
-              chaknaDishes[i] ? "text-sea" : "text-sea/50"
-            }`}
-          >
-            {chaknaDishes[i] ?? `Plate ${i + 1}`}
-          </li>
-        ))}
-      </ul>
-      <p className="mt-4 text-center text-sm italic text-sea/60">Ten small plates. Final dishes set with Joseph.</p>
-    </div>
   );
 }
 
@@ -376,16 +344,14 @@ export function GalleryStrip({
   eyebrow,
   title,
   items,
-  cta = { label: "View full gallery", href: "/gallery" },
 }: {
   eyebrow?: string;
   title: string;
   items: PublicImage[];
-  cta?: { label: string; href: string } | null;
 }) {
   if (items.length === 0) return null;
   return (
-    <section className="bg-navy py-20 md:py-24">
+    <section id="gallery" className="scroll-mt-[76px] bg-navy py-20 md:py-24">
       <div className="mx-auto max-w-7xl px-5">
         <SectionIntro eyebrow={eyebrow} title={title} center dark />
         <div className="mt-12">
@@ -400,13 +366,6 @@ export function GalleryStrip({
             ))}
           </Carousel>
         </div>
-        {cta && (
-          <div className="mt-8 text-center">
-            <Link href={cta.href} className="btn-gold btn-arrow">
-              {cta.label}
-            </Link>
-          </div>
-        )}
       </div>
     </section>
   );
