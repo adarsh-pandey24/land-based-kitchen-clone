@@ -14,7 +14,7 @@ export default async function GalleryAdminPage() {
     <>
       <PageHeader
         title="Gallery"
-        description="Images on the Gallery page, the home carousel, and the strips on service pages and About."
+        description="Images in the home carousel (first 8) and the strips on service pages and About."
         action={{ label: "Add image", href: "/admin/gallery/new" }}
       />
       <Panel>

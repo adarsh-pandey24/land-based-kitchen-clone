@@ -10,7 +10,7 @@ const quickLinks = [
   ["About the Chef", "/about"],
   ["All services", "/services"],
   ["Menus", "/menus"],
-  ["Gallery", "/gallery"],
+  ["Gallery", "/#gallery"],
   ["Reviews & FAQs", "/reviews-faqs"],
   ["Contact", "/contact"],
   ["Privacy Policy", "/legal#privacy"],

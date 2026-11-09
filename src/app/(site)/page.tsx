@@ -1,20 +1,18 @@
 /* eslint-disable @next/next/no-img-element */
-import Link from "next/link";
 import { images, site } from "@/lib/site";
 import { getChefs, getGallery } from "@/lib/content";
 import {
-  ChaknaBand,
   CoreValues,
   EnquirySection,
   GalleryStrip,
-  GroupTiles,
   PageHero,
   SectionIntro,
+  ServiceIcons,
   Split,
 } from "@/components/Sections";
 
 export default async function Home() {
-  const [galleryItems, chefs] = await Promise.all([getGallery(null, 12), getChefs()]);
+  const [galleryItems, chefs] = await Promise.all([getGallery(null, 8), getChefs()]);
   const chef = chefs[0];
   return (
     <>
@@ -63,17 +61,12 @@ export default async function Home() {
         </div>
       </section>
 
-      <GroupTiles eyebrow="What we cater" title="Four ways to feed your guests." />
+      <ServiceIcons eyebrow="What we cater" title="All the ways we feed your guests." />
       <div className="bg-shell px-5 pb-16 text-center">
         <p className="text-lg font-semibold text-navy md:text-xl">
           Drop-off or chef on-site. Every menu built around your guests&apos; dietary needs.
         </p>
-        <Link href="/services" className="btn mt-6">
-          See all 12 services
-        </Link>
       </div>
-
-      <ChaknaBand />
 
       <Split
         eyebrow="Meet the chef"
